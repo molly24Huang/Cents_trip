@@ -1,4 +1,4 @@
-Name,longitude,latitude,Category,Ticket_price,Popular Attractions as in Lonely Planet,Rating,Opening_hours,Description
+NAME,LONGITUDE,LATITUDE,CATEGORY,TICKET_PRICE,POPULARITY,RATING,OPENING_HOURS,DESCRIPTION
 lasalle college of the arts,103.8516,1.3029,architecture,0,0,4.7,"Tuesday to Sunday, 12pm - 7pm, Closed on Monday and public holidays","Housed in a tertiary arts college, the Institute of Contemporary Arts Singapore will help you deepen your appreciation for experimental artworks."
 old supreme court,103.85128,1.2897,architecture,0,0,4.2,Expected to open in 2015,"Due to reopen as the National Gallery Singapore, the Old Supreme Court is in itself a masterpiece of classical art."
 sit flats,103.8336,1.28351,architecture,0,0,4.3,"Daily, 24 hours",The Art Deco elegance of the flats in Tiong Bahru speak of the richness of a vanished world.
