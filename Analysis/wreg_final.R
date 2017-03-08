@@ -3,11 +3,11 @@ library(ibmdbR)
 mycon <- idaConnect("BLUDB","","")
 idaInit(mycon)
 
-data_airbnb <- as.data.frame(ida.data.frame('"DASH12869"."AIRBNB"')[ ,c('LATITUDE', 'LONGITUDE', 'NAME', 'PRICE', 'RATING', 'ROOMID')])
+data_airbnb <- as.data.frame(ida.data.frame('"DASH9787"."AIRBNB"')[ ,c('LATITUDE', 'LONGITUDE', 'NAME', 'PRICE', 'RATING', 'ROOMID')])
 
-data_MRT <- as.data.frame(ida.data.frame('"DASH12869"."MRT"')[ ,c('LATITUDE', 'LONGITUDE', 'NAME')])
+data_MRT <- as.data.frame(ida.data.frame('"DASH9787"."MRT"')[ ,c('LATITUDE', 'LONGITUDE', 'NAME')])
 
-data_attractions <- as.data.frame(ida.data.frame('"DASH12869"."TOURISM_ATTRACTIONS"')[ ,c('CATEGORY', 'LATITUDE', 'LONGITUDE', 'NAME', 'POPULARITY', 'RATING')])
+data_attractions <- as.data.frame(ida.data.frame('"DASH9787"."TOURISM_ATTRACTIONS"')[ ,c('CATEGORY', 'LATITUDE', 'LONGITUDE', 'NAME', 'POPULARITY', 'RATING')])
 
 # #######
 # Dataset:
