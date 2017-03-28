@@ -1,0 +1,22 @@
+---
+
+    order:
+        - architecture
+        - heritage
+        - arts
+        - museums
+        - memorials
+        - places-to-see
+        - recreation-leisure
+        - nature-wildlife
+
+    shownText:
+        architecture: Architecture
+        heritage: Heritage
+        arts: Arts
+        museums: Museums
+        memorials: Memorials
+        places-to-see: Places To See
+        recreation-leisure: Recreation Leisure
+        nature-wildlife: Nature Wildlife
+...

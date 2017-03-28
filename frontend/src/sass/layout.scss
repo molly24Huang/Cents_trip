@@ -1,0 +1,181 @@
+@font-face {
+    font-family: "DING";
+    src: url('font/din-regular-webfont.ttf');
+    font-weight: 400;
+}
+@font-face {
+    font-family: "DING";
+    src: url('font/din-bold-webfont.ttf');
+    font-weight: bold;
+}
+@font-face {
+    font-family: "DING";
+    src: url('font/din-lighter-webfont.ttf');
+    font-weight: 300;
+}
+
+body,
+html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    background-color: $gray-lighter;
+}
+
+.loading-wrapper {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: rgba(255,255,255,.5);
+    color: $gray-dark;
+    z-index: 99999;
+    display: flex;
+    justify-content: center;
+
+    > div {
+        align-self: center;
+
+        img {
+            width: 100px;
+            height: 100px;
+        }
+    }
+}
+
+.main-container {
+    margin: 80px 20px 50px;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.header-bar_with_sider-menu {
+    margin-left: 256px;
+}
+
+.sider-menu {
+    background-color: $gray-lighter !important;
+}
+
+.sider-menu_header {
+    height: 64px;
+    width: 256px;
+}
+
+.sider-menu_menus {
+    > div {
+        width: 256px !important;
+    }
+
+    .sider-menu_menu {
+        @include text-align-center;
+    }
+}
+
+.stepper-navigator-button {
+    width: 50px;
+    height: 50px;
+}
+
+.travel-planning-back-button {
+    @include margin-vertical-10;
+}
+
+.travel-planning-finish-button,
+.travel-planning-next-button {
+    @include margin-vertical-10;
+}
+
+.step-container-wrapper {
+    width: 100px;
+    margin-top: 20px;
+}
+
+.travel-planning-step3-chosen-attractions {
+    width: 150px;
+    margin-top: -30px;
+    margin-left: 10px;
+    max-height: 500px;
+}
+
+.travel-planning-step3-chosen-attractions-content {
+    max-height: 400px;
+    overflow: scroll;
+}
+
+.map-icon {
+    &:before {
+        // color: #00CCBB;
+    }
+}
+.map-icon-label{
+    text-align: center;
+}
+.map-icon-text {
+    transform: translate(-50%, 0);
+    position: absolute;
+    font-weight: bold;
+    margin-top: 50px;
+    color: rgb(104, 159, 56);
+    background: rgba(255, 255, 255, 0.62);
+    padding: 2px 7px;
+    border: solid 1px #0ae21e;
+    font: 600 20px/1em ding;
+
+}
+
+.sider-menu_disabled {
+    cursor: not-allowed;
+    color: grey;
+}
+
+.marker-icon-text {
+    z-index: 10;
+    text-shadow: 0 0 1px #fff, 0 0 2px #fff, 0 0 3px #fff, 0 0 3px #0a0a0a;
+}
+
+.display-none {
+    display: none;
+}
+
+.result_hotel_hotels-wrapper {
+    max-height: 260px;
+    overflow: scroll;
+}
+
+.result_hotel_hotels-wrapper_img {
+    @include pointer;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.result_hotel_map-wrapper {
+    margin: 10px;
+}
+
+.result_hotel_hotels-wrapper {
+    tbody {
+        tr:hover {
+            background-color: #B9F6CA;
+        }
+    }
+}
+
+.choosing-attractions_warnning {
+    position: relative;
+    font-weight: bold;
+    text-shadow: 0 0 1px #fff, 0 0 2px #eee, 0 0 3px;
+    color: rgb(76, 175, 80);
+    left: -40px;
+}
+
+div:focus {
+    outline: none !important;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}
