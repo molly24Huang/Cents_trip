@@ -8,7 +8,7 @@ def cal_dist(lon1, lat1, lon2, lat2):
     dlat = lat2 - lat1
     a = sin(dlat / 2) ** 2 + cos(lat1) * cos(lat2) * sin(dlon / 2) ** 2
     c = 2 * asin(sqrt(a))
-    distance = 6373 * c
+    distance = 6378.137 * c
     return distance
 
 airbnb = '/Users/molly/Documents/NUS/2ndSemester/Projects/CS5224/Cents_trip/dataset/airbnb.csv'

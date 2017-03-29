@@ -31,13 +31,13 @@ def bnb(conn, attra_list):
 
     # extract specific items corresponding to the roomid from the above list
     rec_bnb = [x[0] for x in bnb_filtered]
-    print(rec_bnb)
+    #print(rec_bnb)
 
     rec_bnb_dict = defaultdict(list)
     # hawker center
     for roomid in rec_bnb:
-    	sql = "SELECT FOODID FROM DISTANCE_BNB_FOOD WHERE ATTRACTIONID =" + str(roomid) + \
-          " ORDER BY DISTANCE DESC LIMIT 5"
+        sql = "SELECT FOODID FROM DISTANCE_BNB_FOOD WHERE ROOMID =" + str(roomid) + \
+              " ORDER BY DISTANCE DESC LIMIT 5"
         stmt = ibm_db.exec_immediate(conn, sql)
         dictionary = ibm_db.fetch_both(stmt)
         while dictionary != False:
@@ -122,15 +122,20 @@ def attractions(conn, attra_list):
     return chose_attr
 
 def output(conn, attra_list):
-	pass
+    attr_dict = attractions(conn, attra_list)
+    bnb_dict = bnb(conn, attra_list)
+    output_dict = dict()
+    output_dict['attractions'] = attr_dict
+    output_dict['bnbs'] = bnb_dict
+    return output_dict
 
 def main():
     conn = ibm_db.connect("DATABASE=BLUDB;HOSTNAME=dashdb-entry-yp-dal09-09.services.dal.bluemix.net;\
     						PORT=50000;PROTOCOL=TCPIP;UID=dash9787;\
               				PWD=X_c03EeYTe#u;", "", "")
     attra_list = [5, 87, 34, 65, 30]
-    bnb(conn, attra_list)
-
+    rec_items = output(conn, attra_list)
+    print(rec_items)
 
 if __name__ == "__main__":
     main()
