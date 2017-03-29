@@ -1,0 +1,51 @@
+.horizontal-flex {
+    display: flex;
+    flex-direction: row;
+}
+
+.vertical-flex {
+    display: flex;
+    flex-direction: column;
+}
+
+.aligin-self-center {
+    align-self: center;
+}
+
+.flex-end {
+    justify-content: flex-end;
+}
+
+.flex-center {
+    justify-content: center;
+}
+
+@mixin text-align-center {
+    text-align: center !important;
+}
+
+@mixin margin-top-5 {
+    margin-top: 5px;
+}
+
+@mixin margin-vertical-10 {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+@mixin pointer {
+    cursor: pointer !important;
+}
+
+.margin-horizontal-30 {
+    margin-left: 30px;
+    margin-right: 30px;
+}
+
+.cursor-pointer {
+    @include pointer;
+}
+
+.center-text {
+    @include text-align-center;
+}

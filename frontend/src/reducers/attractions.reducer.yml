@@ -1,0 +1,35 @@
+---
+
+scope: attractions
+
+init:
+    loading: false
+    attractions: null
+
+    chosenAttractions: []
+
+switches:
+
+    FETCH_ATTRACTIONS:
+        loading: true
+
+    FETCH_ATTRACTIONS_SUCCEEDED:
+        !payload
+            loading: false
+            attractions: action.data
+
+    FETCH_ATTRACTIONS_FAILED:
+        loading: false
+
+    CHANGE_FORM_FIELD_VALUE: {}
+
+    RESET_CHOSEN_ATTRACTIONS:
+        chosenAttractions: []
+
+    CHOOSE_ATTRACTION: {}
+
+    SET_CHOSEN_ATTRACTION:
+        !payload
+            chosenAttractions: action.chosenAttractions
+
+...

@@ -1,0 +1,32 @@
+---
+    scope: siderMenu
+
+    init:
+        openAttraction: false
+        openTravelPlanning: true
+        openResult: false
+
+    switches:
+
+        OPEN_ATTRACTION_MENU:
+            openAttraction: true
+            openTravelPlanning: false
+            openResult: false
+
+        CLOSE_ATTRACTION_MENU:
+            openAttraction: false
+            openTravelPlanning: true
+
+        OPEN_RESULT_MENU:
+            openResult: true
+            openTravelPlanning: false
+            openAttraction: false
+
+        CLOSE_RESULT_MENU:
+            openResult: false
+            openTravelPlanning: true
+
+
+
+
+...

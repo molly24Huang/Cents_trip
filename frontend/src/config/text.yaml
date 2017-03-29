@@ -1,0 +1,40 @@
+---
+    HeaderBar:
+        label:  PlaceHolder
+
+    SiderMenu:
+        menus:
+            -   Travel Planning
+            -   Attractions
+            -   Result
+
+    TravelPlanning:
+        Step1:
+            label: Input your Budget
+            content: Write the content here
+            budgetHint: Input your total budget
+            peopleNumHint: Input your people number
+            peopleNum1: One Person
+            peopleNum2: Two Persons
+        Step2:
+            label: Choose your date
+            content: Write the content here
+            startDate:
+                label: 'Travel Start Date'
+            endDate:
+                label: 'Travel End Date'
+        Step3:
+            label: Choose your interested attractions
+            chosenAttractions:
+                label: Chosen Attractions
+
+    NextStepButton:
+        label: Next Step
+
+    BeforeStepButton:
+        label: Previous Step
+
+    RecommendationResult:
+        Hotel:
+            label: Hotel Recommendation
+...

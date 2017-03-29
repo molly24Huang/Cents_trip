@@ -1,0 +1,29 @@
+---
+    scope: recommendation
+
+    init:
+        result: null
+        # {hotel, attractions: { chosen, recommendation}}
+        recommending: false
+        userInputAttractions: []
+
+    switches:
+
+        TRIGGER_FORM_SUBMIT:
+            !payload
+                userInputAttractions: action.attractions
+
+        SUBMIT_USER_INPUT: {}
+
+        DO_RECOMMENDATION:
+            recommending: true
+
+        RECOMMENDATION_SUCCEEDED:
+            !payload
+                recommending: false
+                result: action.data
+
+        RECOMMENDATION_FAILED:
+            recommending: false
+
+...

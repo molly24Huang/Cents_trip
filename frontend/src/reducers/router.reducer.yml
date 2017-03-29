@@ -1,0 +1,14 @@
+---
+scope: router
+
+init: {}
+
+switches:
+
+    PUSH_HISTORY:
+        {}
+
+    REPLACE_HISTORY:
+        {}
+
+...

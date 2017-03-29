@@ -1,0 +1,90 @@
+---
+
+    architecture:
+        iconPath: 'MAP_PIN'
+        iconPathColor: '#00C853'
+        iconClass: 'map-icon map-icon-local-government'
+
+
+    heritage:
+        iconPath: 'ROUTE'
+        iconPathColor: '#00C853'
+        iconClass: 'map-icon map-icon-city-hall'
+
+    arts:
+        iconPath: 'SQUARE_PIN'
+        iconPathColor: '#00C853'
+        iconClass: 'map-icon map-icon-art-gallery'
+
+    museums:
+        iconPath: 'SHIELD'
+        iconPathColor: '#00C853'
+        iconClass: 'map-icon map-icon-museum'
+
+
+    memorials:
+        iconPath: 'SQUARE_ROUNDED'
+        iconPathColor: '#00C853'
+        iconClass: 'map-icon map-icon-political'
+
+    places-to-see:
+        iconPath: 'CIRCLE'
+        iconPathColor: '#00C853'
+        iconClass: 'map-icon map-icon-point-of-interest'
+
+    recreation-leisure:
+        iconPath: 'TRIANGLE'
+        iconPathColor: '#00C853'
+        iconClass: 'map-icon map-icon-park'
+
+    nature-wildlife:
+        iconPath: 'SQUARE'
+        iconPathColor: '#00C853'
+        iconClass: 'map-icon map-icon-zoo'
+
+    spe:
+        55:
+            iconPath: 'HEART'
+            iconPathColor: '#00C853'
+            iconClass: 'map-icon map-icon-university'
+
+        65:
+            iconPath: 'HEART'
+            iconPathColor: '#00C853'
+            iconClass: 'map-icon map-icon-climbing'
+
+        69:
+            iconPath: 'HEART'
+            iconPathColor: '#00C853'
+            iconClass: 'map-icon map-icon-jewelry-store'
+
+        72:
+            iconPath: 'HEART'
+            iconPathColor: '#00C853'
+            iconClass: 'map-icon map-icon-boat-tour'
+
+        82:
+            iconPath: 'HEART'
+            iconPathColor: '#00C853'
+            iconClass: 'map-icon map-icon-roofing-contractor'
+
+        84:
+            iconPath: 'HEART'
+            iconPathColor: '#00C853'
+            iconClass: 'map-icon map-icon-postal-code-prefix'
+
+        86:
+            iconPath: 'HEART'
+            iconPathColor: '#00C853'
+            iconClass: 'map-icon map-icon-boating'
+
+        89:
+            iconPath: 'HEART'
+            iconPathColor: '#00C853'
+            iconClass: 'map-icon map-icon-restaurant'
+
+        61:
+            iconPath: 'SQUARE'
+            iconPathColor: '#00C853'
+            iconClass: 'map-icon map-icon-aquarium'
+...

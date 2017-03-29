@@ -1,0 +1,7 @@
+---
+    MarkerIcon: !include ./markerIcon.yaml
+
+    Text: !include ./text.yaml
+
+    SiderMenu: !include ./siderMenu.yaml
+...
