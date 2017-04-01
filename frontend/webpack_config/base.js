@@ -64,7 +64,7 @@ module.exports.commonConfig = function () {
         module: {
             rules: [{
                 test: /\.jsx?$/,
-                exclude: /node_modules/,
+                exclude: /node_modules\/(?!camelcase\/)/,
                 use: 'happypack/loader?id=jsx',
             }, {
                 test: /\.pug$/,

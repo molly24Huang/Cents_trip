@@ -2,8 +2,7 @@
     scope: recommendation
 
     init:
-        result: null
-        # {hotel, attractions: { chosen, recommendation}}
+        result: {}
         recommending: false
         userInputAttractions: []
 

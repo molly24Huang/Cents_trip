@@ -23,7 +23,7 @@ Open browser and type **127.0.0.1:3000** to go to home page.
 - When editing `.jsx`,`.js` or `.sass` files, refreshing the browser can make all changes take effect.
 - When editing `.yaml` fileis, you should restart the server to make changes work.
 ```
-#stop server: ctrl-z
+#stop server: ctrl-c
 #and then
 yarn start
 ```
@@ -35,5 +35,3 @@ Using webpack to bundle all files when deploy the frontend code to IBM Bluemix s
 ```
 yarn start prod
 ```
-
-

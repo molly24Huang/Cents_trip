@@ -163,12 +163,52 @@ html {
     }
 }
 
+.result-wrapper{
+    width: 100%;
+    min-height: 900px;
+    background-color: #f5f5f5;
+}
+
 .choosing-attractions_warnning {
     position: relative;
     font-weight: bold;
     text-shadow: 0 0 1px #fff, 0 0 2px #eee, 0 0 3px;
     color: rgb(76, 175, 80);
     left: -40px;
+}
+
+.result_attractions-wrapper {
+    margin-top: 50px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+
+.result_attractions-map-wrapper{
+    margin-top: 40px;
+    margin-bottom: 20px;
+}
+
+.attractions-slider{
+    width: 500px;
+}
+
+.slick-left-arrow {
+    transform: rotate(-90deg);
+}
+
+.slick-right-arrow {
+    transform: rotate(90deg);
+}
+
+.slick-arrow {
+    color: #66BB6A;
+    font-size: 40px;
+    &:hover{
+        color: #2E7D32
+    }
 }
 
 div:focus {

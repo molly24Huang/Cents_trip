@@ -1,5 +1,5 @@
 import { Tabs, Tab } from 'material-ui'
-import { compose, lifecycle } from 'recompose'
+import { compose, lifecycle, withState, withHandlers } from 'recompose'
 import _ from 'lodash'
 import { connect } from 'react-redux'
 import Hotel from './Hotel'
@@ -11,9 +11,23 @@ const enhance = compose(
         recommendationResult: state.recommendation.result
     })),
 
+    withState('extraAttractions', 'setExtraAttractions', []),
+    withHandlers({
+        chooseExtraAttraction: ({setExtraAttractions})=>
+            attractionID => setExtraAttractions(pre=>{
+                return do {
+                    if(pre.includes(attractionID)){
+                        _.without(pre, attractionID)
+                    }else{
+                        _.union(pre, [attractionID])
+                    }
+                }
+            })
+        }
+    ),
     lifecycle({
         componentWillMount(){
-            if(_.isNil(this.props.recommendationResult)){
+            if(_.size(this.props.recommendationResult)==0){
                 actions.replaceHistory({
                     toPath: '/'
                 })
@@ -22,17 +36,31 @@ const enhance = compose(
     })
 )
 
-export default enhance(({
- hotel, attractions
-})=>(
-    <div className='result-wrapper'>
-        <Tabs>
-            <Tab label='Hotel'>
-                <Hotel hotelInfo={hotel}/>
-            </Tab>
-            <Tab label='Attractions'>
-                <Attractions/>
-            </Tab>
-        </Tabs>
-    </div>
-))
+export default enhance(
+    ({
+        chooseExtraAttraction, extraAttractions,
+        recommendationResult: {
+                hotels, attractions
+            }={}
+    })=> {
+        if(_.isNil(hotels) || _.isNil(attractions)){
+            return null
+        }
+
+        return (
+        <div className='result-wrapper'>
+            <Tabs>
+                <Tab label='Hotel'>
+                    <Hotel recommendedHotels={hotels}/>
+                </Tab>
+                <Tab label='Attractions'>
+                    <Attractions
+                        extraAttractions={extraAttractions}
+                        chooseExtraAttraction={chooseExtraAttraction}
+                        recommendedAttractions={attractions}
+                    />
+                </Tab>
+            </Tabs>
+        </div>
+    )}
+)

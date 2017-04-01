@@ -1,4 +1,4 @@
-export const backendURL = 'like http://test.cloudcomputing.com';
+export const backendURL = '127.0.0.1:8000';
 export const corsMode = 'cors';
 export const ENV = 'dev';
 export * from './base';

@@ -34,9 +34,13 @@ const dataSourceNodes = dataSource=> _.map(dataSource,
 
 let tempSelectedAttractionsIDKeeper = {}
 
-const constructCategoryMenu = (attractions, chosenAttractions, maxSelectableCount) =>
+const constructCategoryMenu = (
+    drawOpen,
+    attractions, chosenAttractions, maxSelectableCount
+) =>
     Config.SiderMenu.order.map((category, idx)=>(
         <SuperSelectField key={idx}
+            drawOpen={drawOpen}
             preSelectedItems= {chosenAttractions.filter(
                 chosenAttracton=>
                     chosenAttracton.CATEGORY==category).map(
@@ -109,7 +113,7 @@ const enhance = compose(
         openAttraction: state.siderMenu.openAttraction,
         openTravelPlanning: state.siderMenu.openTravelPlanning,
         openResult: state.siderMenu.openResult,
-        attractions: state.attractions.attractions,
+        classfiedAttractions: state.attractions.classfiedAttractions,
         choosenAttractions: state.attractions.chosenAttractions,
         ...formSelector(state, 'startDate', 'endDate')
     })),
@@ -125,6 +129,7 @@ const enhance = compose(
                 prop.endDate !=nextProp.endDate){
             tempSelectedAttractionsIDKeeper = {}
         }
+        if(prop.open != nextProp.open) return true
         if(prop.menuValue !== nextProp.menuValue) {
             tempSelectedAttractionsIDKeeper = {}
             return true
@@ -144,7 +149,7 @@ const enhance = compose(
 export default enhance(({
     open, currentLocation,
     menuValue, changeMenu,
-    muiTheme, attractions,
+    muiTheme, classfiedAttractions,
     openTravelPlanning,
     openAttraction,
     choosenAttractions,
@@ -220,9 +225,10 @@ export default enhance(({
                         primaryTogglesNestedList
                         primaryText={Config.Text.SiderMenu.menus[1]}
                         nestedItems={
-                            _.isNil(attractions) ? [] :
+                            _.isNil(classfiedAttractions) ? [] :
                                 constructCategoryMenu(
-                                    attractions,
+                                    open,
+                                    classfiedAttractions,
                                     choosenAttractions,
                                     maxSelectableCount
                                 )

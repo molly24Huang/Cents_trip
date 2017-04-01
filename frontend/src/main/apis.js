@@ -41,7 +41,9 @@ const requestPost =
           const url = new URL(fullURL(apiPath))
           return fetch(url.toString(), {
              ...postInit,
-             headers: new Headers({...env.headers, 'X-CSRFToken': Cookies.get('csrftoken') }),
+             headers: new Headers({...env.headers,
+                //  'X-CSRFToken': Cookies.get('csrftoken')
+            }),
              body: JSON.stringify(data)
           }).then(res=>handler(res)).catch(e =>({success: false, error: e}))
         }
