@@ -12,7 +12,7 @@ const checkedColor = '#00C853'
 export default class AttractionMap extends React.PureComponent {
     constructor(props){
         super(props)
-        this.map =
+        this.map = null
         this.hawkerCenterMarkers = {}
         this.attractionMarkers = {}
     }
@@ -101,13 +101,15 @@ export default class AttractionMap extends React.PureComponent {
         const {
             userChosenExtraAttractions, center, attractionFullInfo
         } = this.props
-        _.forEach(this.attractionMarkers, (marker, id)=>{
+        const keys = Object.keys(this.attractionMarkers)
+        _.forEach(keys, (key, idx)=>{
+            const marker = this.attractionMarkers[key]
             const icon = marker.getIcon()
-            if(userChosenExtraAttractions.includes(parseInt(id)) && icon.fillColor==uncheckedColor){
+            if(userChosenExtraAttractions.includes(parseInt(key)) && icon.fillColor==uncheckedColor){
                 icon.fillColor=checkedColor
                 marker.setIcon(icon)
             }
-            if(!userChosenExtraAttractions.includes(parseInt(id)) && icon.fillColor==checkedColor){
+            if(!userChosenExtraAttractions.includes(parseInt(key)) && icon.fillColor==checkedColor){
                 icon.fillColor=uncheckedColor
                 marker.setIcon(icon)
             }

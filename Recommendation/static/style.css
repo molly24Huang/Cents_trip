@@ -287,5 +287,21 @@ a {
   color: black;
 }
 
+.slick-next:before {
+  content: '' !important;
+}
+
+[dir='rtl'] .slick-next:before {
+  content: '' !important;
+}
+
+.slick-prev:before {
+  content: '' !important;
+}
+
+[dir='rtl'] .slick-prev:before {
+  content: '' !important;
+}
+
 
 /*# sourceMappingURL=style.css.map*/

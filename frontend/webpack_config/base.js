@@ -56,7 +56,7 @@ module.exports.commonConfig = function () {
         },
 
         output: {
-            path: root`/dist`,
+            path: root`../Recommendation/static`,
             filename: '[name].js',
             publicPath: '/',
         },
@@ -125,7 +125,7 @@ module.exports.commonConfig = function () {
         plugins: [
             new CopyWebpackPlugin([{
                 from: root`/src/assets/`,
-                to: root`/dist/assets/`,
+                to: root`../Recommendation/static/assets/`,
             }], {
                 debug: 'debug'
             }),

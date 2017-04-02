@@ -8,37 +8,6 @@ import { DISPLAY_ATTRACTIONS_PER_PAGE } from 'main/constants'
 import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
 
-const dummyAttractions = {
-    chosen: [{
-        id:1, hawkerCenters:[1],
-    },{
-        id:2, hawkerCenters:[2]
-    }],
-    rec: [
-        {id:3, hawkerCenters:[1,]},
-        {id:4, hawkerCenters:[2,]},
-        {id:5, hawkerCenters:[1,]},
-        {id:6, hawkerCenters:[2,]},
-        {id:7, hawkerCenters:[]},
-        {id:8, hawkerCenters:[]},
-        {id:9, hawkerCenters:[]},
-        {id:10, hawkerCenters:[]},
-        {id:11, hawkerCenters:[]},
-        {id:12, hawkerCenters:[]},
-        {id:13, hawkerCenters:[]},
-        {id:14, hawkerCenters:[]},
-        {id:15, hawkerCenters:[]},
-        {id:16, hawkerCenters:[]},
-        {id:17, hawkerCenters:[]},
-        {id:18, hawkerCenters:[]},
-        {id:19, hawkerCenters:[]},
-        {id:20, hawkerCenters:[]},
-        {id:21, hawkerCenters:[]},
-        {id:22, hawkerCenters:[]},
-        {id:23, hawkerCenters:[]},
-    ]
-}
-
 const leftArrowStyle = {left: '-60px'}
 const rightArrowStyle = {right: '-40px'}
 
@@ -80,7 +49,6 @@ const enhance = compose(
     mapProps((
         {
         recommendedAttractions:{ chosen, rec},
-        // =dummyAttractions,
         ...others})=>({
         chunkedRecommandtions:
             _.chunk(rec, DISPLAY_ATTRACTIONS_PER_PAGE),

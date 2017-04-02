@@ -16,57 +16,8 @@ import _ from 'lodash'
 import { requestGet, requestPost } from 'main/apis'
 import { goto403 } from 'main/util'
 
-const dummyHotels = [{
-    id: 1,
-    name: 'Brand New Apartment Near the City',
-    price: 169,
-    rating: 5,
-    lat: 1.3129895003410064,
-    lng: 103.87605899589323,
-    img: 'https://a0.muscache.com/im/pictures/62599881/dbefcb51_original.jpg?aki_policy=large',
-    roomURL:'https://www.airbnb.com.sg/rooms/4917556',
-},{
-    id: 2,
-    name: 'Luxurious condo near city centre',
-    price: 141,
-    rating: 5,
-    lat: 1.3148603874454443,
-    lng: 103.89437950388881,
-    img: 'https://a0.muscache.com/im/pictures/d8fb9e8d-bd64-4b18-91a5-fedc38aec456.jpg?aki_policy=large',
-    roomURL:'https://www.airbnb.com.sg/rooms/11088631',
-}]
-
-const dummyHawkerCenters=[{
-    id: 1,
-    name: 'Tiong Bahru Market and Food Centre',
-    lat: 1.304869,
-    lng: 103.832468
-},{
-    id: 2,
-    name: 'The Verge Food Court',
-    lat: 1.314782,
-    lng: 103.891839
-},{
-    id: 3,
-    name: 'Chomp Chomp Food Centre',
-    lat: 1.314268,
-    lng: 103.866463
-},{
-    id: 4,
-    name: 'East Coast Lagoon Food Village',
-    lat: 1.315147,
-    lng: 103.830095
-}]
-
-const dummyAttractions = require('./TOURISM_ATTRACTIONS.csv')
 
 const dummyAction = { type: 'DUMMY'}
-
-const list2DictWithID = (list, key='id') =>{
-    const result = {}
-    list.forEach(ele=>result[ele[key]]=ele)
-    return result
-}
 
 const historyPushEpic = (action$, store)=>
     action$.ofType('PUSH_HISTORY').do(
@@ -81,44 +32,38 @@ const historyReplaceEpic = (action$, store)=>
 
 const fetchAttractonsEpic = action$ =>
     action$.ofType('FETCH_ATTRACTIONS').mergeMap(
-        action$ => {
-            /* dummy example*/
-            const attractionImages = require('./attraction_images.yaml')
-            const attractions = list2DictWithID(dummyAttractions, 'ATTRACTIONID')
-            const hotels = list2DictWithID(dummyHotels)
-            const hawkerCenters = list2DictWithID(dummyHawkerCenters)
-            const classfiedAttractions = {}
-            for(const attraction of dummyAttractions){
-                const category = _.get(classfiedAttractions,
-                    attraction.CATEGORY, [])
-                category.push(attraction)
-                classfiedAttractions[attraction.CATEGORY] = category
-            }
-            return (
-                Observable.of({
-                type: 'FETCH_ATTRACTIONS_SUCCEEDED',
-                data: {
-                    attractions,
-                    hotels,
-                    hawkerCenters,
-                    classfiedAttractions,
-                    attractionImages
+        action$ => Observable.fromPromise(requestGet(env.infoURL)()).map(
+            res=> {
+                if(res.success){
+                    const attractionImages = require('./attraction_images.yaml')
+                    const {hotels, hawker_centers:hawkerCenters, attractions}=
+                        res.data
+                    const classfiedAttractions = {}
+                    const keys= Object.keys(attractions)
+                    keys.forEach(key=>{
+                        const attraction = attractions[key]
+                        const category = _.get(classfiedAttractions,
+                            attraction.CATEGORY, [])
+                        category.push(attraction)
+                        classfiedAttractions[attraction.CATEGORY] = category
+                    })
+                    return ({
+                        type: 'FETCH_ATTRACTIONS_SUCCEEDED',
+                        data: {
+                            attractions,
+                            hotels,
+                            hawkerCenters,
+                            classfiedAttractions,
+                            attractionImages
+                        }
+                    })
+                }else{
+                    return ({
+                        type: 'FETCH_ATTRACTIONS_FAILED'
+                    })
                 }
-                }).delay(1000)
-            )
-        }
-            // Observable.fromPromise(
-            //     requestGet(env.fetchAttractionsURL)()).map(
-            //         res => (
-            //             res.success ?
-            //             {
-            //                 type: 'FETCH_ATTRACTIONS_SUCCEEDED',
-            //                 data: res.data
-            //             } : {
-            //                 type: 'FETCH_ATTRACTIONS_FAILED',
-            //             }
-            //         )
-            //     )
+            }
+        )
     )
 
 const triggerFormSubmitEpic = (action$, store) =>
@@ -178,53 +123,24 @@ const chooseAttractionEpic = (action$,store) =>
 const doRecommendationEpic = action$ =>
     action$.ofType('DO_RECOMMENDATION').mergeMap(
         action$ =>
-            Observable.concat(
-                Observable.fromPromise(requestGet(
-                    `${env.backendURL}${env.recomend}`, payload)()).map(
-                        res=> res.success ? Observable.of({
+            Observable.fromPromise(requestPost(
+                env.recommend, action$.payload)()).mergeMap(
+                    res=> res.success ? Observable.concat(
+                        Observable.of({
                             type: 'RECOMMENDATION_SUCCEEDED',
                             data: res.data,
-                        }) : Observable.of({
-                            type: 'RECOMMENDATION_FAILED',
+                        }),
+                        Observable.of({
+                            type: 'OPEN_RESULT_MENU'
+                        }),
+                        Observable.of({
+                            type: 'PUSH_HISTORY',
+                            toPath: 'result'
                         })
-                    ),
-                // Observable.of({
-                //     type: 'RECOMMENDATION_SUCCEEDED',
-                //     data: {
-                //         hotels: [
-                //                 {id:1, hawkerCenters:[3,4]},
-                //                 {id:2, hawkerCenters:[1,2]}
-                //             ],
-                //         attractions: {
-                //             chosen: [{
-                //                 id:1, hawkerCenters:[1],
-                //             },{
-                //                 id:2, hawkerCenters:[2]
-                //             }],
-                //             rec: [
-                //                 {id:3, hawkerCenters:[1]},
-                //                 {id:4, hawkerCenters:[2]},
-                //                 {id:5, hawkerCenters:[1]},
-                //                 {id:6, hawkerCenters:[2]},
-                //                 {id:8, hawkerCenters:[]},
-                //                 {id:9, hawkerCenters:[]},
-                //                 {id:10, hawkerCenters:[]},
-                //                 {id:11, hawkerCenters:[]},
-                //                 {id:12, hawkerCenters:[]},
-                //                 {id:13, hawkerCenters:[]},
-                //             ]
-                //         }
-                //     }
-                // }),
-                Observable.of({
-                    type: 'OPEN_RESULT_MENU'
-                }),
-                Observable.of({
-                    type: 'PUSH_HISTORY',
-                    toPath: 'result'
-                })
-            )
-            // .delay(5000)
+                    ) : Observable.of({
+                        type: 'RECOMMENDATION_FAILED',
+                    })
+                ),
     )
 
 

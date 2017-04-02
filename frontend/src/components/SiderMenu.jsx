@@ -56,7 +56,8 @@ const constructCategoryMenu = (
                     tempSelectedAttractionsIDKeeper[value] = true
                 }
                 actions.chooseAttraction(
-                    _.find(attractions[category], {ATTRACTIONID: value})
+                    _.find(attractions[category], attraction =>
+                        attraction.ATTRACTIONID==value)
                 )
             }}
             name={category}

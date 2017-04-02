@@ -9,14 +9,14 @@ const getInit = {
       method: 'GET',
       mode: env.corsMode,
       cache: 'default',
-      credentials: 'include',
+    //   credentials: 'include',
     }
 
 const postInit = {
       method: 'POST',
       mode: env.corsMode,
       cache: 'default',
-      credentials: 'include',
+    //   credentials: 'include',
     }
 
 const requestGet =
@@ -42,7 +42,6 @@ const requestPost =
           return fetch(url.toString(), {
              ...postInit,
              headers: new Headers({...env.headers,
-                //  'X-CSRFToken': Cookies.get('csrftoken')
             }),
              body: JSON.stringify(data)
           }).then(res=>handler(res)).catch(e =>({success: false, error: e}))

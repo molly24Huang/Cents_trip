@@ -7,6 +7,11 @@ import ibm_db
 from rec import output
 
 class IndexHandler(RequestHandler):
+    def set_default_headers(self):
+        self.set_header("Access-Control-Allow-Origin", "*")
+        self.set_header("Access-Control-Allow-Headers", "x-requested-with")
+        self.set_header('Access-Control-Allow-Methods', 'POST, GET, OPTIONS')
+
     def get(self):
         self.render('static/index.html')
         # self.write("hello, world")
@@ -32,60 +37,78 @@ class InfoHandler(RequestHandler):
         # hotel: id, name, latitude, longitude
         # attraction: id, name, latitude, longitude
         # hawker center: id, latitude, longitude
-        # bnb_dict = dict()
-        # attr_dict = dict()
-        # food_dict = dict()
-        # conn = ibm_db.connect("DATABASE=BLUDB;HOSTNAME=dashdb-entry-yp-dal09-09.services.dal.bluemix.net;\
-        # 						PORT=50000;PROTOCOL=TCPIP;UID=dash9787;\
-        #           				PWD=X_c03EeYTe#u;", "", "")
+        bnb_dict = {}
+        attr_dict = {}
+        hawker_center_dict = {}
+        conn = ibm_db.connect("DATABASE=BLUDB;HOSTNAME=dashdb-entry-yp-dal09-09.services.dal.bluemix.net;\
+        					PORT=50000;PROTOCOL=TCPIP;UID=dash9787;\
+                  				PWD=X_c03EeYTe#u;", "", "")
 
-        # sql_airbnb = "SELECT ROOMID,NAME,LATITUDE,LONGITUDE FROM AIRBNB"
-        # stmt = ibm_db.exec_immediate(conn, sql_airbnb)
-        # while ibm_db.fetch_row(stmt) != False:
-        #     dict_airbnb = ibm_db.fetch_assoc(stmt)
-        #     bnb_RID = dict_airbnb['ROOMID']
-        #     bnb_NAME = dict_airbnb['NAME']
-        #     bnb_LAT = dict_airbnb['LATITUDE']
-        #     bnb_LONG = dict_airbnb['LONGITUDE']
-        #     bnb_dict[bnb_RID] = [bnb_NAME, bnb_LAT, bnb_LONG]
+        sql_airbnb = "SELECT ROOMID,NAME,LATITUDE,LONGITUDE,PRICE,RATING,IMGURL,ROOMURL FROM AIRBNB"
+        stmt = ibm_db.exec_immediate(conn, sql_airbnb)
+        while True:
+            dict_airbnb = ibm_db.fetch_assoc(stmt)
+            if dict_airbnb is False:
+                break
+            bnb_dict[int(dict_airbnb['ROOMID'].strip())] = {
+                'id': int( dict_airbnb['ROOMID'].strip() ),
+                'name': dict_airbnb['NAME'].strip(),
+                'price':  float( dict_airbnb['PRICE'].strip()),
+                'rating': float( dict_airbnb['RATING'].strip()),
+                'lat': float( dict_airbnb['LATITUDE'].strip()),
+                'lng': float( dict_airbnb['LONGITUDE'].strip()) ,
+                'img': dict_airbnb['IMGURL'],
+                'roomURL': dict_airbnb['ROOMURL'],
+                }
 
-        # sql_attr = "SELECT ATTRACTIONID,NAME,LATITUDE,LONGITUDE FROM TOURISM_ATTRACTIONS"
-        # stmt = ibm_db.exec_immediate(conn, sql_attr)
-        # while ibm_db.fetch_row(stmt) != False:
-        #     dict_attr = ibm_db.fetch_assoc(stmt)
-        #     attr_RID = dict_attr['ATTRACTIONID']
-        #     attr_NAME = dict_attr['NAME']
-        #     attr_PRICE = dict_attr['PRICE']
-        #     attr_LAT = dict_attr['LATITUDE']
-        #     attr_LONG = dict_attr['LONGITUDE']
-        #     attr_dict[attr_RID] = [attr_NAME, attr_LAT, attr_LONG]
+        sql_attr = "SELECT ATTRACTIONID,NAME,LATITUDE,LONGITUDE,CATEGORY,TICKET_PRICE FROM TOURISM_ATTRACTIONS"
+        stmt = ibm_db.exec_immediate(conn, sql_attr)
+        while True:
+            dict_attr = ibm_db.fetch_assoc(stmt)
+            if dict_attr is False:
+                break
+            attr_dict[int( dict_attr['ATTRACTIONID'].strip() )] = {
+                    'ATTRACTIONID': int( dict_attr['ATTRACTIONID'].strip() ),
+                    'NAME': dict_attr['NAME'].strip(),
+                    'TICKET_PRICE': float( dict_attr['TICKET_PRICE'].strip() ),
+                    'LATITUDE':  float( dict_attr['LATITUDE'].strip() ),
+                    'LONGITUDE': float( dict_attr['LONGITUDE'].strip() ),
+                    'CATEGORY': dict_attr['CATEGORY'],
+                    }
 
-        # sql_food = "SELECT FOODID,NAME,LATITUDE,LONGITUDE FROM FOOD"
-        # stmt = ibm_db.exec_immediate(conn, sql_food)
-        # while ibm_db.fetch_row(stmt) != False:
-        #     dict_food = ibm_db.fetch_assoc(stmt)
-        #     food_RID = dict_food['FOODID']
-        #     food_NAME = dict_food['NAME']
-        #     food_LAT = dict_food['LATITUDE']
-        #     food_LONG = dict_food['LONGITUDE']
-        #     food_dict[food_RID] = [food_NAME, food_LAT, food_LONG]
 
-        # Results_bnb = json.dumps(bnb_dict)
-        # Results_attr = json.dumps(attr_dict)
-        # Results_food = json.dumps(food_dict)
-        # dict_all = {**bnb_dict, **attr_dict, **food_dict}
-        dict_all={'id':1}
-        # results = json.dumps(dict_all)
+        sql_food = "SELECT FOODID,NAME,LATITUDE,LONGITUDE FROM FOOD"
+        stmt = ibm_db.exec_immediate(conn, sql_food)
+        while True:
+            dict_food = ibm_db.fetch_assoc(stmt)
+            if dict_food is False:
+                break
+            hawker_center_dict[dict_food['FOODID']] = {
+                    'id': dict_food['FOODID'],
+                    'name': dict_food['NAME'],
+                    'lat': float( dict_food['LATITUDE'].strip()  ),
+                    'lng': float( dict_food['LONGITUDE'].strip() ),
+                    }
+        dict_all={
+                'hotels': bnb_dict,
+                'attractions': attr_dict,
+                'hawker_centers': hawker_center_dict
+                }
         self.write(json_encode(dict_all))
 
 
 class RecommendationHandler(RequestHandler):
 
-
     def set_default_headers(self):
         self.set_header("Access-Control-Allow-Origin", "*")
         self.set_header("Access-Control-Allow-Headers", "x-requested-with")
         self.set_header('Access-Control-Allow-Methods', 'POST, GET, OPTIONS')
+        self.set_header("Access-Control-Allow-Headers", "Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With")
+
+    def options(self):
+        # just for cors
+        self.set_status(204)
+        self.finish()
 
     def post(self):
         # get the users' input and return the back-end output]
@@ -105,10 +128,11 @@ def make_app(autoreload):
         (r"/", IndexHandler),
         (r"/info", InfoHandler),
         (r"/recommend", RecommendationHandler),
-        (r'/assets/css', StaticFileHandler, {'path': os.path.join(os.path.dirname(__file__), 'static/assets/css')}),
-        (r'/*', StaticFileHandler, {'path': os.path.join(os.path.dirname(__file__), 'static')})
+        (r"/travel-planning", IndexHandler),
+        (r"/result", IndexHandler),
+        #(r'/assets/css', StaticFileHandler, {'path': os.path.join(os.path.dirname(__file__), 'static/assets/css')}),
+        (r'/(.*)', StaticFileHandler, {'path': os.path.join(os.path.dirname(__file__), 'static')})
     ], autoreload=autoreload, static_path=os.path.join(os.path.dirname(__file__), 'static'))
-
 
 PORT = int(os.getenv('PORT', 8000))
 AUTORELOAD = int(os.getenv('AUTORELOAD', True))

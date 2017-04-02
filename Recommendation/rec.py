@@ -120,7 +120,7 @@ def attractions(conn, attra_list):
             chose_attr_dict['hawkerCenters'] = chose_foodid_list
             dictionary1 = ibm_db.fetch_assoc(stmt1) 
         chose_attr_list.append(chose_attr_dict)
-    attr_dict['Chosen'] = chose_attr_list
+    attr_dict['chosen'] = chose_attr_list
     #print(attr_dict)
     
     # recommended attraction
@@ -143,7 +143,7 @@ def attractions(conn, attra_list):
             rec_attr_dict['hawkerCenters'] = rec_foodid_list
             dictionary2 = ibm_db.fetch_assoc(stmt2)
         rec_attr_list.append(rec_attr_dict)
-    attr_dict['Rec'] = rec_attr_list
+    attr_dict['rec'] = rec_attr_list
 
     #print(attr_dict['Rec'])
     '''
