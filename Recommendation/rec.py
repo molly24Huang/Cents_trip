@@ -43,11 +43,14 @@ def bnb(conn, attra_list, days, attra_price, budget):
 
     rec_bnb_list = []
     # hawker center
+    #print('>>>>>> Airbnb')
     for roomid in rec_bnb:
         sql = "SELECT FOODID FROM DISTANCE_BNB_FOOD WHERE ROOMID =" + str(roomid) + "AND DISTANCE <= 2"\
               " ORDER BY DISTANCE ASC LIMIT 3"
+        #print('[{roomid}->>>{sql}]'.format(roomid=roomid, sql=sql))
         stmt = ibm_db.exec_immediate(conn, sql)
         dictionary = ibm_db.fetch_both(stmt)
+        #print('result-->>', dictionary)
 
         roomid_list = []
         bnbs_dict = dict()
@@ -59,7 +62,7 @@ def bnb(conn, attra_list, days, attra_price, budget):
             bnbs_dict['hawkerCenters'] = roomid_list
             dictionary = ibm_db.fetch_assoc(stmt)
         rec_bnb_list.append(bnbs_dict)
-    
+
     return rec_bnb_list
 
 def similarity(file):
@@ -101,11 +104,11 @@ def similarity(file):
 
 def attractions(conn, attra_list):
     attr_dict = dict()
-    
+
     # input attraction
     chose_attr_list = []
     for attra in attra_list:
-        sql_chosen = "SELECT FOODID FROM DISTANCE_FOOD_ATTRACTION WHERE ATTRACTIONID =" + str(attra) + "AND DISTANCE <= 2"\
+        sql_chosen = "SELECT FOODID FROM DISTANCE_FOOD_ATTRACTION WHERE ATTRACTIONID = " + str(attra) + " AND DISTANCE <= 2"\
           " ORDER BY DISTANCE ASC LIMIT 3"
         stmt1 = ibm_db.exec_immediate(conn, sql_chosen)
         dictionary1 = ibm_db.fetch_both(stmt1)
@@ -118,17 +121,17 @@ def attractions(conn, attra_list):
             chose_foodid_list.append(int(foodid))
             chose_attr_dict['id'] = int(attra)
             chose_attr_dict['hawkerCenters'] = chose_foodid_list
-            dictionary1 = ibm_db.fetch_assoc(stmt1) 
+            dictionary1 = ibm_db.fetch_assoc(stmt1)
         chose_attr_list.append(chose_attr_dict)
     attr_dict['chosen'] = chose_attr_list
     #print(attr_dict)
-    
+
     # recommended attraction
     rec_attr_list = []
     file = '../dataset/TOURISM_ATTRACTIONS.csv'
     rec_attr_ID = similarity(file)
     for rec_ID in rec_attr_ID:
-        sql_rec = "SELECT FOODID FROM DISTANCE_FOOD_ATTRACTION WHERE ATTRACTIONID =" + str(rec_ID) + "AND DISTANCE <= 2"\
+        sql_rec = "SELECT FOODID FROM DISTANCE_FOOD_ATTRACTION WHERE ATTRACTIONID = " + str(rec_ID) + " AND DISTANCE <= 2"\
           " ORDER BY DISTANCE ASC LIMIT 3"
         stmt2 = ibm_db.exec_immediate(conn, sql_rec)
         dictionary2 = ibm_db.fetch_both(stmt2)
@@ -159,8 +162,8 @@ def output(attra_list, days, attra_price, budget):
     return output_dict
 
 def main():
-    #attra_list = [75, 31, 24, 65, 3]
-    attra_list = [30, 57, 3, 28, 54]
+    attra_list = [75, 31, 24, 65, 3]
+    #attra_list = [30, 57, 3, 28, 54]
     days = 3
     attra_price = 200
     budget = 2000

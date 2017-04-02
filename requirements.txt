@@ -1,0 +1,6 @@
+pandas
+numpy
+scipy
+ibm_db
+tornado
+sklearn

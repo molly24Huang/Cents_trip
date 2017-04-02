@@ -81,7 +81,7 @@ const submitUserInputEpic = (action$, store) =>
             moment(rawPaylayLoad.startDate).startOf('day'))
         ).asDays() + 1
         const attra_list = attractions
-        const budget = rawPaylayLoad.budget
+        const budget = parseInt(rawPaylayLoad.budget)
         const attra_price = attra_list.reduce(
             (acc, attra_id)=> acc +
                 parseInt(attractionFullInfo[parseInt(attra_id)].TICKET_PRICE),
