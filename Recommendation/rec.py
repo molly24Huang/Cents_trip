@@ -65,9 +65,10 @@ def bnb(conn, attra_list, days, attra_price, budget):
 
     return rec_bnb_list
 
-def similarity(file):
+def similarity(file, attra_list):
     select_sim = []
     select_ID = []
+    rec_IDs = []
 
     df = pd.read_csv(file)
     data = df.iloc[:, [5, 6, 7]].as_matrix()
@@ -87,6 +88,7 @@ def similarity(file):
 
     similarities = cosine_similarity(with_txt_features, with_txt_features)
 
+    #print(similarities)
     for i in range(0, len(similarities)):
         sim = similarities[i].copy()
         sorted_sim = np.sort(sim)[::-1]
@@ -97,9 +99,18 @@ def similarity(file):
         sorted_ID = np.array(sorted_ID) + 1
         sorted_ID = list(sorted_ID)
         select_ID.append(sorted_ID[1:11])
-        rec_ID = [j for i in select_ID for j in i]
-        rec_ID = set(rec_ID)
-        rec_ID = list(rec_ID)
+        # print(sorted_sim)
+        # rec_ID = [j for i in select_ID for j in i]
+        # rec_ID = set(rec_ID)
+        # rec_ID = list(rec_ID)
+    for attr in attra_list:
+        this_attrid = int(attr) - 1
+        #print(this_attrid)
+        rec_IDs.append(select_ID[this_attrid])
+    rec_ID = [j for i in rec_IDs for j in i]
+    rec_ID = set(rec_ID)
+    rec_ID = list(rec_ID)
+    #print(rec_ID[:6])
     return rec_ID[:11]
 
 def attractions(conn, attra_list):
@@ -129,7 +140,8 @@ def attractions(conn, attra_list):
     # recommended attraction
     rec_attr_list = []
     file = '../dataset/TOURISM_ATTRACTIONS.csv'
-    rec_attr_ID = similarity(file)
+    rec_attr_ID = similarity(file, attra_list)
+    #print(len(rec_attr_ID))
     for rec_ID in rec_attr_ID:
         sql_rec = "SELECT FOODID FROM DISTANCE_FOOD_ATTRACTION WHERE ATTRACTIONID = " + str(rec_ID) + " AND DISTANCE <= 2"\
           " ORDER BY DISTANCE ASC LIMIT 3"
@@ -167,6 +179,7 @@ def main():
     days = 3
     attra_price = 200
     budget = 2000
+    #similarity('../dataset/TOURISM_ATTRACTIONS.csv', attra_list)
     rec_items = output(attra_list, days, attra_price, budget)
     print(rec_items)
 
