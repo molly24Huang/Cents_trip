@@ -13,7 +13,7 @@ def bnb(conn, attra_list, days, attra_price, budget):
         sql = """SELECT d.ROOMID, a.PRICE, a.COSTPERFORMANCE
 			   FROM DISTANCE d JOIN AIRBNB a ON d.ROOMID=a.ROOMID
 			   WHERE ATTRACTIONID = ?
-			   ORDER BY DISTANCE DESC LIMIT 20"""
+			   ORDER BY DISTANCE ASC LIMIT 20"""
 
         stmt = ibm_db.prepare(conn, sql)
         ibm_db.bind_param(stmt, 1, attra)
@@ -44,8 +44,8 @@ def bnb(conn, attra_list, days, attra_price, budget):
     rec_bnb_list = []
     # hawker center
     for roomid in rec_bnb:
-        sql = "SELECT FOODID FROM DISTANCE_BNB_FOOD WHERE ROOMID =" + str(roomid) + \
-              " ORDER BY DISTANCE DESC LIMIT 5"
+        sql = "SELECT FOODID FROM DISTANCE_BNB_FOOD WHERE ROOMID =" + str(roomid) + "AND DISTANCE <= 2"\
+              " ORDER BY DISTANCE ASC LIMIT 3"
         stmt = ibm_db.exec_immediate(conn, sql)
         dictionary = ibm_db.fetch_both(stmt)
 
@@ -105,8 +105,8 @@ def attractions(conn, attra_list):
     # input attraction
     chose_attr_list = []
     for attra in attra_list:
-        sql_chosen = "SELECT FOODID FROM DISTANCE_FOOD_ATTRACTION WHERE ATTRACTIONID =" + str(attra) + \
-          " ORDER BY DISTANCE DESC LIMIT 5"
+        sql_chosen = "SELECT FOODID FROM DISTANCE_FOOD_ATTRACTION WHERE ATTRACTIONID =" + str(attra) + "AND DISTANCE <= 2"\
+          " ORDER BY DISTANCE ASC LIMIT 3"
         stmt1 = ibm_db.exec_immediate(conn, sql_chosen)
         dictionary1 = ibm_db.fetch_both(stmt1)
 
@@ -125,11 +125,11 @@ def attractions(conn, attra_list):
     
     # recommended attraction
     rec_attr_list = []
-    file = './TOURISM_ATTRACTIONS.csv'
+    file = '../dataset/TOURISM_ATTRACTIONS.csv'
     rec_attr_ID = similarity(file)
     for rec_ID in rec_attr_ID:
-        sql_rec = "SELECT FOODID FROM DISTANCE_FOOD_ATTRACTION WHERE ATTRACTIONID =" + str(rec_ID) + \
-          " ORDER BY DISTANCE DESC LIMIT 5"
+        sql_rec = "SELECT FOODID FROM DISTANCE_FOOD_ATTRACTION WHERE ATTRACTIONID =" + str(rec_ID) + "AND DISTANCE <= 2"\
+          " ORDER BY DISTANCE ASC LIMIT 3"
         stmt2 = ibm_db.exec_immediate(conn, sql_rec)
         dictionary2 = ibm_db.fetch_both(stmt2)
 
@@ -145,18 +145,6 @@ def attractions(conn, attra_list):
         rec_attr_list.append(rec_attr_dict)
     attr_dict['rec'] = rec_attr_list
 
-    #print(attr_dict['Rec'])
-    '''
-    import json
-    for key, value in  attr_dict.items():
-        print(key, '>>')
-        print(value, '>>>')
-        for v in value:
-            print(v)
-            print(json.dumps(v))
-    # print(json.dumps(attr_dict), '>>>>>>>>>')
-    '''
-
     return attr_dict
 
 def output(attra_list, days, attra_price, budget):
@@ -171,7 +159,8 @@ def output(attra_list, days, attra_price, budget):
     return output_dict
 
 def main():
-    attra_list = [5, 87, 34, 65, 30]
+    #attra_list = [75, 31, 24, 65, 3]
+    attra_list = [30, 57, 3, 28, 54]
     days = 3
     attra_price = 200
     budget = 2000
