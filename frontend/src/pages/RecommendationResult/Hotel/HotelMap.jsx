@@ -1,4 +1,5 @@
 import _ from 'lodash'
+import titlecase from 'titlecase'
 
 const defaultCenter = {
     lat: 1.27,
@@ -37,7 +38,24 @@ export default class HotelMap extends React.Component {
                 path: ROUTE,
                 fillColor: '#69F0AE'
             },
-            map_icon_label: '<span class="map-icon map-icon-lodging"></span>'
+            map_icon_label: '<span class="map-icon map-icon-lodging">'+
+                                `<span id="marker-icon-hotel-${
+                                    id
+                                }" class="marker-icon-text map-icon-text display-none pop-box">${
+                                    titlecase(name)
+                                }</span`+
+                            '</span>'
+        })
+        marker.addListener('mouseover', ()=>{
+                const classList = document.getElementById(`marker-icon-hotel-${id}`).classList
+                if(classList.contains('display-none'))
+                    classList.remove('display-none')
+        })
+        marker.addListener('mouseout', ()=>{
+            const classList = document.getElementById(
+                `marker-icon-hotel-${id}`).classList
+            if(!classList.contains('display-none'))
+                classList.add('display-none')
         })
         this.hotelMarker=marker
         this.hotelID=id

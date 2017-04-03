@@ -53,7 +53,7 @@ export default class AttractionMap extends React.PureComponent {
                             uncheckedColor,
                 }),
             map_icon_label: `<span class="${iconConfig.iconClass}">`+
-                                `<span id="marker-icon-${
+                                `<span id="marker-icon-attraction-${
                                     attractionID
                                 }" class="marker-icon-text map-icon-text display-none pop-box">${
                                     titlecase(name)
@@ -80,6 +80,18 @@ export default class AttractionMap extends React.PureComponent {
             })
             marker.addListener('click', ()=>{
                 this.props.chooseExtraAttraction(attractionID)
+            })
+            marker.addListener('mouseover', ()=>{
+                    const classList = document.getElementById(
+                        `marker-icon-attraction-${attractionID}`).classList
+                    if(classList.contains('display-none'))
+                        classList.remove('display-none')
+            })
+            marker.addListener('mouseout', ()=>{
+                const classList = document.getElementById(
+                    `marker-icon-attraction-${attractionID}`).classList
+                if(!classList.contains('display-none'))
+                    classList.add('display-none')
             })
             this.attractionMarkers[attractionID]=marker
 

@@ -72,7 +72,7 @@ const enhance = compose(
         hotelFullInfo: state.attractions.hotels,
         hawkerCentersFullInfo: state.attractions.hawkerCenters,
     })),
-    withProps(                                  
+    withProps(
         ({hotelFullInfo, hawkerCentersFullInfo, recommendedHotels}) => ({
             hotelInfo: recommendedHotels.map(({id, hawkerCenters})=>({
                 ...hotelFullInfo[id],
