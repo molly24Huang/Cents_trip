@@ -110,7 +110,6 @@ def similarity(file, attra_list):
     rec_ID = [j for i in rec_IDs for j in i]
     rec_ID = set(rec_ID)
     rec_ID = list(rec_ID)
-    #print(rec_ID[:6])
     return rec_ID[:11]
 
 def attractions(conn, attra_list):
