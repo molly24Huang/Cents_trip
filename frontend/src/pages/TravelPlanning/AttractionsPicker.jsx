@@ -47,7 +47,9 @@ class AttractionsPicker extends React.Component {
     }
 
     componentWillUnmount(){
-        _.foreach(this.markers, (marker,key)=>{
+        const keys = Object.keys(this.markers)
+        _.foreach(keys, (_key,key)=>{
+            const marker = this.markers[_key]
             marker.setMap(null)
             delete this.markers[key]
         })
@@ -94,7 +96,7 @@ class AttractionsPicker extends React.Component {
             })
         }else{
             const removedMarkerID = Object.keys(markersOnMap).filter(
-                (id)=>~_.findIndex(userCurrentChosenMarkers, {ATTRACTIONID: id})==0)[0]
+                (id)=>~_.findIndex(userCurrentChosenMarkers, attraction => attraction.ATTRACTIONID==id)==0)[0]
             markersOnMap[removedMarkerID].setMap(null)
             delete markersOnMap[removedMarkerID]
         }

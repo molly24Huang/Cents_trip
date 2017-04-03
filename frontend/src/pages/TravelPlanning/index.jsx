@@ -52,7 +52,7 @@ const enhance = compose(
             startDate: new Date(),
             endDate: new Date(),
             budget: 0,
-            peopleNum: 1,
+            // peopleNum: 1,
         },
     }),
     reduxForm({
@@ -102,7 +102,7 @@ export default enhance(({
                                     floatingLabelText={
                                         Text.TravelPlanning.Step1.budgetHint}
                                 />
-                                <Field
+                                {/* <Field
                                     component={SelectField}
                                     name='peopleNum'
                                     floatingLabelText={
@@ -117,7 +117,7 @@ export default enhance(({
                                         primaryText={
                                             Text.TravelPlanning.Step1.peopleNum2
                                         }/>
-                                </Field>
+                                </Field> */}
                                 <NextStepButton
                                     onTouchTap={ e=> nextStep()}
                                     label = 'Next'

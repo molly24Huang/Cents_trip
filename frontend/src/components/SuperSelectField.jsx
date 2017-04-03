@@ -145,9 +145,9 @@ class SelectField extends Component {
   }
 
   componentWillReceiveProps (nextProps) {
-    if (!areEqual(nextProps.value, this.state.selectedItems)) {
-      this.setState({ selectedItems: nextProps.value })
-    }
+    // if (!areEqual(nextProps.value, this.state.selectedItems)) {
+    //   this.setState({ selectedItems: nextProps.value })
+    // }
   }
   // Counts nodes with non-null value property without optgroups
   // noinspection JSMethodCanBeStatic
@@ -241,7 +241,7 @@ class SelectField extends Component {
   }
 
   isValueSelected(value){
-     return  ~_.findIndex(this.state.selectedItems, {value:value}) !== 0
+     return  ~_.findIndex(this.state.selectedItems, item=>item.value==value) !== 0
   }
   /**
    * Menu methods

@@ -11,7 +11,7 @@ export default class HotelMap extends React.Component {
         this.map = null
         this.hotelMarker = null
         this.hotelID = null
-        this.hawkerCenter = []
+        this.hawkerCenters = []
     }
 
     componentDidMount(){
@@ -24,7 +24,7 @@ export default class HotelMap extends React.Component {
         this.map = map
     }
 
-    updateHotelMap({id, name, lat, lng, hawkerCenter}){
+    updateHotelMap({id, name, lat, lng, hawkerCenters}){
         const marker = new Marker({
             position: new google.maps.LatLng(
                 lat, lng),
@@ -41,7 +41,7 @@ export default class HotelMap extends React.Component {
         })
         this.hotelMarker=marker
         this.hotelID=id
-        this.hawkerCenter = hawkerCenter.map(({name, lat, lng})=>
+        this.hawkerCenters = hawkerCenters.map(({name, lat, lng})=>
             new Marker({
                 position: new google.maps.LatLng(lat, lng),
                 map: this.map,
@@ -57,10 +57,10 @@ export default class HotelMap extends React.Component {
             this.hotelMarker=null
             this.hotelID=null
         }
-        if(_.size(this.hawkerCenter)!=0){
-            this.hawkerCenter.forEach(
+        if(_.size(this.hawkerCenters)!=0){
+            this.hawkerCenters.forEach(
                 hawkerCenter=>hawkerCenter.setMap(null))
-            this.hawkerCenter = []
+            this.hawkerCenters = []
         }
     }
 

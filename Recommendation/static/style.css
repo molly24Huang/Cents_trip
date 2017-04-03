@@ -1,0 +1,307 @@
+.horizontal-flex {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: row;
+  flex-direction: row;
+}
+
+.vertical-flex {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.aligin-self-center {
+  -ms-flex-item-align: center;
+  -ms-grid-row-align: center;
+  align-self: center;
+}
+
+.flex-end {
+  -webkit-box-pack: end;
+  -ms-flex-pack: end;
+  justify-content: flex-end;
+}
+
+.flex-center {
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+}
+
+.margin-horizontal-30 {
+  margin-left: 30px;
+  margin-right: 30px;
+}
+
+.cursor-pointer {
+  cursor: pointer !important;
+}
+
+.center-text {
+  text-align: center !important;
+}
+
+@font-face {
+  font-family: "DING";
+  src: url(/din-regular-webfont-4c7a194684f29f4d3d05feb3685652a8.ttf);
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: "DING";
+  src: url(/din-bold-webfont-099e00eaa08f65fc5e03e19291443352.ttf);
+  font-weight: bold;
+}
+
+@font-face {
+  font-family: "DING";
+  src: url(/din-lighter-webfont-9e846212bc598878ff6905f5658742b4.ttf);
+  font-weight: 300;
+}
+
+body,
+html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background-color: #f5f5f5;
+}
+
+.loading-wrapper {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: rgba(255, 255, 255, 0.5);
+  color: #4a4a4a;
+  z-index: 99999;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+}
+
+.loading-wrapper > div {
+  -ms-flex-item-align: center;
+  -ms-grid-row-align: center;
+  align-self: center;
+}
+
+.loading-wrapper > div img {
+  width: 100px;
+  height: 100px;
+}
+
+.main-container {
+  margin: 80px 20px 50px;
+  height: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+}
+
+.header-bar_with_sider-menu {
+  margin-left: 256px;
+}
+
+.sider-menu {
+  background-color: #f5f5f5 !important;
+}
+
+.sider-menu_header {
+  height: 64px;
+  width: 256px;
+}
+
+.sider-menu_menus > div {
+  width: 256px !important;
+}
+
+.sider-menu_menus .sider-menu_menu {
+  text-align: center !important;
+}
+
+.stepper-navigator-button {
+  width: 50px;
+  height: 50px;
+}
+
+.travel-planning-back-button {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.travel-planning-finish-button,
+.travel-planning-next-button {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.step-container-wrapper {
+  width: 100px;
+  margin-top: 20px;
+}
+
+.travel-planning-step3-chosen-attractions {
+  width: 150px;
+  margin-top: -30px;
+  margin-left: 10px;
+  max-height: 500px;
+}
+
+.travel-planning-step3-chosen-attractions-content {
+  max-height: 400px;
+  overflow: scroll;
+}
+
+.map-icon-label {
+  text-align: center;
+}
+
+.map-icon-text {
+  -webkit-transform: translate(-50%, 0);
+  transform: translate(-50%, 0);
+  position: absolute;
+  font-weight: bold;
+  margin-top: 50px;
+  color: #689f38;
+  background: rgba(255, 255, 255, 0.62);
+  padding: 2px 7px;
+  border: solid 1px #0ae21e;
+  font: 600 20px/1em ding;
+}
+
+.sider-menu_disabled {
+  cursor: not-allowed;
+  color: grey;
+}
+
+.marker-icon-text {
+  z-index: 10;
+  text-shadow: 0 0 1px #fff, 0 0 2px #fff, 0 0 3px #fff, 0 0 3px #0a0a0a;
+}
+
+.display-none {
+  display: none;
+}
+
+.result_hotel_hotels-wrapper {
+  max-height: 260px;
+  overflow: scroll;
+}
+
+.result_hotel_hotels-wrapper_img {
+  cursor: pointer !important;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.result_hotel_map-wrapper {
+  margin: 10px;
+}
+
+.result_hotel_hotels-wrapper tbody tr:hover {
+  background-color: #B9F6CA;
+}
+
+.result-wrapper {
+  width: 100%;
+  min-height: 900px;
+  background-color: #f5f5f5;
+}
+
+.choosing-attractions_warnning {
+  position: relative;
+  font-weight: bold;
+  text-shadow: 0 0 1px #fff, 0 0 2px #eee, 0 0 3px;
+  color: #4caf50;
+  left: -40px;
+}
+
+.result_attractions-wrapper {
+  margin-top: 50px;
+  width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.result_attractions-map-wrapper {
+  margin-top: 40px;
+  margin-bottom: 20px;
+}
+
+.attractions-slider {
+  width: 500px;
+}
+
+.slick-left-arrow {
+  -webkit-transform: rotate(-90deg);
+  transform: rotate(-90deg);
+}
+
+.slick-right-arrow {
+  -webkit-transform: rotate(90deg);
+  transform: rotate(90deg);
+}
+
+.slick-arrow {
+  color: #66BB6A;
+  font-size: 40px;
+}
+
+.slick-arrow:hover {
+  color: #2E7D32;
+}
+
+div:focus {
+  outline: none !important;
+}
+
+a {
+  text-decoration: none;
+  color: black;
+}
+
+.slick-next:before {
+  content: '' !important;
+}
+
+[dir='rtl'] .slick-next:before {
+  content: '' !important;
+}
+
+.slick-prev:before {
+  content: '' !important;
+}
+
+[dir='rtl'] .slick-prev:before {
+  content: '' !important;
+}
+
+
+/*# sourceMappingURL=style.css.map*/

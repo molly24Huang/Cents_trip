@@ -12,9 +12,9 @@ new WebpackDevServer(webpack(config()), {
     hot: true,
     pulicPath: '/',
     historyApiFallback: true,
-    // proxy: {
-    //     '/api/*': '',
-    // },
+    proxy: {
+        '/recommend': 'http://127.0.0.1:8000',
+    },
 }).listen(port, '0.0.0.0', (err) => {
     if (err) {
         return console.log(err);

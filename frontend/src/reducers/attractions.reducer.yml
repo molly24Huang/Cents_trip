@@ -4,7 +4,12 @@ scope: attractions
 
 init:
     loading: false
+
     attractions: null
+    attractionImages: null
+    hotels: null
+    hawkerCenters: null
+    classfiedAttractions: null
 
     chosenAttractions: []
 
@@ -16,7 +21,11 @@ switches:
     FETCH_ATTRACTIONS_SUCCEEDED:
         !payload
             loading: false
-            attractions: action.data
+            attractionImages: action.data.attractionImages
+            attractions: action.data.attractions
+            hotels: action.data.hotels
+            hawkerCenters: action.data.hawkerCenters
+            classfiedAttractions: action.data.classfiedAttractions
 
     FETCH_ATTRACTIONS_FAILED:
         loading: false
@@ -31,5 +40,4 @@ switches:
     SET_CHOSEN_ATTRACTION:
         !payload
             chosenAttractions: action.chosenAttractions
-
 ...

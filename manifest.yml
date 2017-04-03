@@ -1,0 +1,10 @@
+applications:
+- path: .
+  memory: 128M
+  instances: 1
+  domain: mybluemix.net
+  name: Cents-Trip
+  host: cents-trip
+  disk_quota: 1024M
+  buildpack: https://github.com/cloudfoundry/python-buildpack
+  command: 'cd Recommendation && python server.py'

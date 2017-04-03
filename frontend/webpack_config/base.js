@@ -56,7 +56,7 @@ module.exports.commonConfig = function () {
         },
 
         output: {
-            path: root`/dist`,
+            path: root`../Recommendation/static`,
             filename: '[name].js',
             publicPath: '/',
         },
@@ -64,7 +64,7 @@ module.exports.commonConfig = function () {
         module: {
             rules: [{
                 test: /\.jsx?$/,
-                exclude: /node_modules/,
+                exclude: /node_modules\/(?!camelcase\/)/,
                 use: 'happypack/loader?id=jsx',
             }, {
                 test: /\.pug$/,
@@ -125,7 +125,7 @@ module.exports.commonConfig = function () {
         plugins: [
             new CopyWebpackPlugin([{
                 from: root`/src/assets/`,
-                to: root`/dist/assets/`,
+                to: root`../Recommendation/static/assets/`,
             }], {
                 debug: 'debug'
             }),

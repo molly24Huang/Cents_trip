@@ -2,6 +2,7 @@ import { submit, change } from 'redux-form'
 import { push, replace } from 'react-router-redux'
 import { combineEpics } from 'redux-observable'
 import { Observable } from 'rxjs/Observable'
+import moment from 'moment'
 import "rxjs/add/operator/delay"
 import "rxjs/add/operator/map"
 import "rxjs/add/operator/mergeMap"
@@ -15,44 +16,6 @@ import _ from 'lodash'
 import { requestGet, requestPost } from 'main/apis'
 import { goto403 } from 'main/util'
 
-const dummyHotel = [{
-    id: 1,
-    name: 'Brand New Apartment Near the City',
-    price: 169,
-    rating: 5,
-    lat: 1.3129895003410064,
-    lng: 103.87605899589323,
-    img: 'https://a0.muscache.com/im/pictures/62599881/dbefcb51_original.jpg?aki_policy=large',
-    roomURL:'https://www.airbnb.com.sg/rooms/4917556',
-    hawkerCenter:[{
-        name: 'Chomp Chomp Food Centre',
-        lat: 1.314268,
-        lng: 103.866463
-    },{
-        name: 'East Coast Lagoon Food Village',
-        lat: 1.315147,
-        lng: 103.830095
-    }]
-},{
-    id: 2,
-    name: 'Luxurious condo near city centre',
-    price: 141,
-    rating: 5,
-    lat: 1.3148603874454443,
-    lng: 103.89437950388881,
-    img: 'https://a0.muscache.com/im/pictures/d8fb9e8d-bd64-4b18-91a5-fedc38aec456.jpg?aki_policy=large',
-    roomURL:'https://www.airbnb.com.sg/rooms/11088631',
-    hawkerCenter:[{
-        name: 'Tiong Bahru Market and Food Centre',
-        lat: 1.304869,
-        lng: 103.832468
-    },{
-        name: 'The Verge Food Court',
-        lat: 1.314782,
-        lng: 103.891839
-    }]
-}
-]
 
 const dummyAction = { type: 'DUMMY'}
 
@@ -67,38 +30,40 @@ const historyReplaceEpic = (action$, store)=>
     ).mapTo(dummyAction)
 
 
-
-
 const fetchAttractonsEpic = action$ =>
     action$.ofType('FETCH_ATTRACTIONS').mergeMap(
-        action$ => {
-            /* dummy example*/
-            const csvRawData = require('./TOURISM_ATTRACTIONS.csv')
-            const classfiedData = {}
-            for(const attraction of csvRawData){
-                const category = _.get(classfiedData, attraction.CATEGORY, [])
-                category.push(attraction)
-                classfiedData[attraction.CATEGORY] = category
+        action$ => Observable.fromPromise(requestGet(env.infoURL)()).map(
+            res=> {
+                if(res.success){
+                    const attractionImages = require('./attraction_images.yaml')
+                    const {hotels, hawker_centers:hawkerCenters, attractions}=
+                        res.data
+                    const classfiedAttractions = {}
+                    const keys= Object.keys(attractions)
+                    keys.forEach(key=>{
+                        const attraction = attractions[key]
+                        const category = _.get(classfiedAttractions,
+                            attraction.CATEGORY, [])
+                        category.push(attraction)
+                        classfiedAttractions[attraction.CATEGORY] = category
+                    })
+                    return ({
+                        type: 'FETCH_ATTRACTIONS_SUCCEEDED',
+                        data: {
+                            attractions,
+                            hotels,
+                            hawkerCenters,
+                            classfiedAttractions,
+                            attractionImages
+                        }
+                    })
+                }else{
+                    return ({
+                        type: 'FETCH_ATTRACTIONS_FAILED'
+                    })
+                }
             }
-            return (
-                Observable.of({
-                type: 'FETCH_ATTRACTIONS_SUCCEEDED',
-                data: classfiedData
-                }).delay(1000)
-            )
-        }
-            // Observable.fromPromise(
-            //     requestGet(env.fetchAttractionsURL)()).map(
-            //         res => (
-            //             res.success ?
-            //             {
-            //                 type: 'FETCH_ATTRACTIONS_SUCCEEDED',
-            //                 data: res.data
-            //             } : {
-            //                 type: 'FETCH_ATTRACTIONS_FAILED',
-            //             }
-            //         )
-            //     )
+        )
     )
 
 const triggerFormSubmitEpic = (action$, store) =>
@@ -106,13 +71,31 @@ const triggerFormSubmitEpic = (action$, store) =>
         store.dispatch(submit(action$.formID))).mapTo(dummyAction)
 
 const submitUserInputEpic = (action$, store) =>
-    action$.ofType('SUBMIT_USER_INPUT').do(action$=>{
+    action$.ofType('SUBMIT_USER_INPUT').mergeMap(action$=>{
         const attractions =
             store.getState()['recommendation'].userInputAttractions
-        const payload = Object.assign({}, action$.payload,{ attractions })
-        console.log(payload)
-    }).mapTo({
-        type: 'DO_RECOMMENDATION'
+        const attractionFullInfo = store.getState()['attractions'].attractions
+        const rawPaylayLoad = action$.payload
+        const days = moment.duration(
+            moment(rawPaylayLoad.endDate).startOf('day').diff(
+            moment(rawPaylayLoad.startDate).startOf('day'))
+        ).asDays() + 1
+        const attra_list = attractions
+        const budget = parseInt(rawPaylayLoad.budget)
+        const attra_price = attra_list.reduce(
+            (acc, attra_id)=> acc +
+                parseInt(attractionFullInfo[parseInt(attra_id)].TICKET_PRICE),
+            0)
+        const payload = {
+            attra_list,
+            attra_price,
+            budget,
+            days
+        }
+        return Observable.of({
+            type: 'DO_RECOMMENDATION',
+            payload,
+        })
     })
 
 const changeFormFieldValueEpic = (action$, store) =>
@@ -140,25 +123,24 @@ const chooseAttractionEpic = (action$,store) =>
 const doRecommendationEpic = action$ =>
     action$.ofType('DO_RECOMMENDATION').mergeMap(
         action$ =>
-            Observable.concat(
-                Observable.of({
-                    type: 'RECOMMENDATION_SUCCEEDED',
-                    data: {
-                        hotel: dummyHotel,
-                        attractions: {
-                            chosen: [],
-                            recommendation: []
-                        }
-                    }
-                }),
-                Observable.of({
-                    type: 'OPEN_RESULT_MENU'
-                }),
-                Observable.of({
-                    type: 'PUSH_HISTORY',
-                    toPath: 'result'
-                })
-            ).delay(5000)
+            Observable.fromPromise(requestPost(
+                env.recommend, action$.payload)()).mergeMap(
+                    res=> res.success ? Observable.concat(
+                        Observable.of({
+                            type: 'RECOMMENDATION_SUCCEEDED',
+                            data: res.data,
+                        }),
+                        Observable.of({
+                            type: 'OPEN_RESULT_MENU'
+                        }),
+                        Observable.of({
+                            type: 'PUSH_HISTORY',
+                            toPath: 'result'
+                        })
+                    ) : Observable.of({
+                        type: 'RECOMMENDATION_FAILED',
+                    })
+                ),
     )
 
 

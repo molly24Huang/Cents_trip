@@ -13,48 +13,11 @@ import {
  import LightBox from 'react-images'
  import titlecase from 'titlecase'
  import _ from 'lodash'
- import { compose, withState, withHandlers } from 'recompose'
+ import { compose, withState, withHandlers, withProps } from 'recompose'
+ import { connect } from 'react-redux'
  import ReactTooltip from 'react-tooltip'
  import HotelMap from './HotelMap'
 
- const dummyHotel = [{
-     id: 1,
-     name: 'Brand New Apartment Near the City',
-     price: 169,
-     rating: 5,
-     lat: 1.3129895003410064,
-     lng: 103.87605899589323,
-     img: 'https://a0.muscache.com/im/pictures/62599881/dbefcb51_original.jpg?aki_policy=large',
-     roomURL:'https://www.airbnb.com.sg/rooms/4917556',
-     hawkerCenter:[{
-         name: 'Chomp Chomp Food Centre',
-         lat: 1.314268,
-         lng: 103.866463
-     },{
-         name: 'East Coast Lagoon Food Village',
-         lat: 1.315147,
-         lng: 103.830095
-     }]
- },{
-     id: 2,
-     name: 'Luxurious condo near city centre',
-     price: 141,
-     rating: 5,
-     lat: 1.3148603874454443,
-     lng: 103.89437950388881,
-     img: 'https://a0.muscache.com/im/pictures/d8fb9e8d-bd64-4b18-91a5-fedc38aec456.jpg?aki_policy=large',
-     roomURL:'https://www.airbnb.com.sg/rooms/11088631',
-     hawkerCenter:[{
-         name: 'Tiong Bahru Market and Food Centre',
-         lat: 1.304869,
-         lng: 103.832468
-     },{
-         name: 'The Verge Food Court',
-         lat: 1.314782,
-         lng: 103.891839
-     }]
- }
-]
 
 const Text = Config.Text.RecommendationResult
 
@@ -83,10 +46,10 @@ const enhance = compose(
                 setOpenImageView(()=> false)
             },
         chooseHotel: ({setHotelMapInfo}) =>
-            ({id, lat, lng, name, hawkerCenter}) => setHotelMapInfo(pre=>{
+            ({id, lat, lng, name, hawkerCenters}) => setHotelMapInfo(pre=>{
                 return do {
                     if(_.isNil(pre) || pre.id != id){
-                        ({id, lat, lng, name, hawkerCenter})
+                        ({id, lat, lng, name, hawkerCenters})
                     }else {
                         null
                     }
@@ -104,10 +67,23 @@ const enhance = compose(
                     }
                 }
             })
-    })
+    }),
+    connect(state=>({
+        hotelFullInfo: state.attractions.hotels,
+        hawkerCentersFullInfo: state.attractions.hawkerCenters,
+    })),
+    withProps(                                  
+        ({hotelFullInfo, hawkerCentersFullInfo, recommendedHotels}) => ({
+            hotelInfo: recommendedHotels.map(({id, hawkerCenters})=>({
+                ...hotelFullInfo[id],
+                hawkerCenters: hawkerCenters.map(id=>hawkerCentersFullInfo[id])
+            }))
+        })
+    )
 )
 
-export default enhance(({hotelInfo=dummyHotel,
+export default enhance(({
+    hotelInfo,
     showImageView,
     closeImageView,
     openImageView,
@@ -143,7 +119,7 @@ export default enhance(({hotelInfo=dummyHotel,
                         { hotelInfo.map(({
                             id, name, price,
                             rating, img, roomURL,
-                            lat, lng, hawkerCenter
+                            lat, lng, hawkerCenters
                         }, idx)=>(
                             <TableRow
                                 hoverable={true}
@@ -152,7 +128,7 @@ export default enhance(({hotelInfo=dummyHotel,
                                     if(e.target.tagName!=='TD') return
                                     selectRow(id)
                                     chooseHotel({
-                                        id, name, lat, lng, hawkerCenter
+                                        id, name, lat, lng, hawkerCenters
                                     })
                                 }}
                                 key={idx}>
