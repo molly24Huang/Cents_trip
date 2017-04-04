@@ -1,10 +1,15 @@
 import { Tabs, Tab } from 'material-ui'
+import { Menu, MainButton, ChildButton } from 'react-mfb'
 import { compose, lifecycle, withState, withHandlers } from 'recompose'
+import { ModalManager } from 'react-dynamic-modal'
 import _ from 'lodash'
 import { connect } from 'react-redux'
+import SummaryModal from 'components/SummaryModal'
 import Hotel from './Hotel'
 import Attractions from './Attractions'
 import actions from 'main/actions'
+
+import 'react-mfb/mfb.css'
 
 const enhance = compose(
     connect(state=>({
@@ -61,6 +66,28 @@ export default enhance(
                     />
                 </Tab>
             </Tabs>
+            <div onClick={e=>{e.stopPropagation()}}>
+                <Menu effect='slidein-spring' position='br' method='hover'>
+                    <MainButton
+                        iconResting="ion-plus-round"
+                        iconActive="ion-close-round"
+                        label='More Actions'
+                        onClick={e=>{
+                            e.preventDefault()
+                            e.stopPropagation()
+                        }}
+                        />
+                    <ChildButton
+                        icon="ion-happy"
+                        label="Summary"
+                        onClick={()=>{
+                            ModalManager.open(
+                                <SummaryModal/>
+                            )
+                        }}
+                     />
+            </Menu>
+            </div>
         </div>
     )}
 )

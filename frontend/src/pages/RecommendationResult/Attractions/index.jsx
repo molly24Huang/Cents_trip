@@ -65,27 +65,29 @@ export default enhance(({
 }) => (
     attractionImages==null ? null :
     <div className='result_attractions-wrapper'>
-        <Slider {...sliderSettings}
-            >
-            { chunkedRecommandtions.map(
-                (displayAttractions, idx)=>(
-                    <div key={idx}>
-                        <DisplayGrid
-                            changeCenter={changeCenter}
-                            chooseExtraAttraction={chooseExtraAttraction}
-                            extraAttractions={extraAttractions}
-                            gridItems={displayAttractions.map(
-                                ({id, hawkerCenters}, idx)=>({
-                                    img: attractionImages[id],
-                                    title: attractionFullInfo[id].NAME,
-                                    attractionID: id,
-                                })
-                            )}
-                        />
-                    </div>
-                )
-            )}
-        </Slider>
+        { chunkedRecommandtions.length != 0 ?
+            <Slider {...sliderSettings}>
+                { chunkedRecommandtions.map(
+                    (displayAttractions, idx)=>(
+                        <div key={idx}>
+                            <DisplayGrid
+                                changeCenter={changeCenter}
+                                chooseExtraAttraction={chooseExtraAttraction}
+                                extraAttractions={extraAttractions}
+                                gridItems={displayAttractions.map(
+                                    ({id, hawkerCenters}, idx)=>({
+                                        img: attractionImages[id],
+                                        title: attractionFullInfo[id].NAME,
+                                        attractionID: id,
+                                    })
+                                )}
+                            />
+                        </div>
+                    )
+                )}
+            </Slider> :
+            null
+        }
         <AttractionMap
             center={center}
             recommendations={rec}

@@ -171,7 +171,8 @@ export default enhance(({
                 backgroundColor: muiTheme.palette.primary1Color
             }}/>
             <div className='sider-menu_menus'>
-                <SelectableList value={currentMenuValue}>
+                <SelectableList value={currentMenuValue}
+                    style={{marginBottom: 200}}>
                     <ListItem
                         hoverColor={'rgba(118, 255, 3, 0.2)'}
                         rightIcon={
