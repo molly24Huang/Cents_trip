@@ -95,10 +95,10 @@ def similarity(file, attra_list):
         sorted_ID = np.argsort(sim)[::-1]
         # print(sorted_ID)
         # select the most 20 similar attractions except themselves
-        select_sim.append(sorted_sim[1:11])
+        select_sim.append(sorted_sim[1:15])
         sorted_ID = np.array(sorted_ID) + 1
         sorted_ID = list(sorted_ID)
-        select_ID.append(sorted_ID[1:11])
+        select_ID.append(sorted_ID[1:15])
         # print(sorted_sim)
         # rec_ID = [j for i in select_ID for j in i]
         # rec_ID = set(rec_ID)
