@@ -110,7 +110,7 @@ def similarity(file, attra_list):
     rec_ID = [j for i in rec_IDs for j in i]
     rec_ID = set(rec_ID)
     rec_ID = list(rec_ID)
-    return rec_ID[:15]
+    return rec_ID[:10]
 
 def attractions(conn, attra_list):
     attr_dict = dict()
