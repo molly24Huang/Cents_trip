@@ -1,15 +1,13 @@
 import { Tabs, Tab } from 'material-ui'
-import { Menu, MainButton, ChildButton } from 'react-mfb'
 import { compose, lifecycle, withState, withHandlers } from 'recompose'
 import { ModalManager } from 'react-dynamic-modal'
 import _ from 'lodash'
 import { connect } from 'react-redux'
 import SummaryModal from 'components/SummaryModal'
+import { Menu, MainButton, ChildButton } from 'components/mfb'
 import Hotel from './Hotel'
 import Attractions from './Attractions'
 import actions from 'main/actions'
-
-import 'react-mfb/mfb.css'
 
 const enhance = compose(
     connect(state=>({

@@ -63,38 +63,38 @@ export default enhance(({
     center, changeCenter,
     rec, hawkerCenterFullInfo,
 }) => (
-    attractionImages==null ? null :
-    <div className='result_attractions-wrapper'>
-        { chunkedRecommandtions.length != 0 ?
+        attractionImages==null ? null :
+        <div className='result_attractions-wrapper'>
+        {
+            chunkedRecommandtions.length == 0 ? null :
             <Slider {...sliderSettings}>
-                { chunkedRecommandtions.map(
-                    (displayAttractions, idx)=>(
-                        <div key={idx}>
-                            <DisplayGrid
-                                changeCenter={changeCenter}
-                                chooseExtraAttraction={chooseExtraAttraction}
-                                extraAttractions={extraAttractions}
-                                gridItems={displayAttractions.map(
-                                    ({id, hawkerCenters}, idx)=>({
-                                        img: attractionImages[id],
-                                        title: attractionFullInfo[id].NAME,
-                                        attractionID: id,
-                                    })
-                                )}
-                            />
-                        </div>
-                    )
-                )}
-            </Slider> :
-            null
-        }
+            { chunkedRecommandtions.map(
+                (displayAttractions, idx)=>(
+                    <div key={idx}>
+                    <DisplayGrid
+                    changeCenter={changeCenter}
+                    chooseExtraAttraction={chooseExtraAttraction}
+                    extraAttractions={extraAttractions}
+                    gridItems={displayAttractions.filter(x=>!_.isNil(x.id)).map(
+                        ({id, hawkerCenters}, idx)=>({
+                            img: attractionImages[id],
+                            title: attractionFullInfo[id].NAME,
+                            attractionID: id,
+                        })
+                    )}
+                    />
+                    </div>
+                )
+            )}
+        </Slider>
+    }
         <AttractionMap
-            center={center}
-            recommendations={rec}
-            attractionFullInfo={attractionFullInfo}
-            userChosenExtraAttractions={extraAttractions}
-            chooseExtraAttraction={chooseExtraAttraction}
-            hawkerCenterFullInfo={hawkerCenterFullInfo}
+        center={center}
+        recommendations={rec}
+        attractionFullInfo={attractionFullInfo}
+        userChosenExtraAttractions={extraAttractions}
+        chooseExtraAttraction={chooseExtraAttraction}
+        hawkerCenterFullInfo={hawkerCenterFullInfo}
         />
-    </div>
-))
+        </div>
+    ))
