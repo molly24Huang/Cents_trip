@@ -125,21 +125,31 @@ const doRecommendationEpic = action$ =>
         action$ =>
             Observable.fromPromise(requestPost(
                 env.recommend, action$.payload)()).mergeMap(
-                    res=> res.success ? Observable.concat(
-                        Observable.of({
-                            type: 'RECOMMENDATION_SUCCEEDED',
-                            data: res.data,
-                        }),
-                        Observable.of({
-                            type: 'OPEN_RESULT_MENU'
-                        }),
-                        Observable.of({
-                            type: 'PUSH_HISTORY',
-                            toPath: 'result'
-                        })
-                    ) : Observable.of({
+                    res=> {
+                        if(res.success) {
+                            const {hotels, attractions:{chosen, rec}} = res.data
+                            return Observable.concat(
+                                Observable.of({
+                                    type: 'RECOMMENDATION_SUCCEEDED',
+                                    data: {
+                                        hotels: hotels.filter(x=>!_.isNil(x.id)),
+                                        attractions:{
+                                            chosen: chosen.filter(x=>!_.isNil(x.id)),
+                                            rec: rec.filter(x=>!_.isNil(x.id) && x.id!=103 && !chosen.map(y=>y.id).includes(x.id))
+                                        }
+                                    }
+                                }),
+                                Observable.of({
+                                    type: 'OPEN_RESULT_MENU'
+                                }),
+                                Observable.of({
+                                    type: 'PUSH_HISTORY',
+                                    toPath: 'result'
+                                })
+                            )}
+                    else return Observable.of({
                         type: 'RECOMMENDATION_FAILED',
-                    })
+                    })}
                 ),
     )
 

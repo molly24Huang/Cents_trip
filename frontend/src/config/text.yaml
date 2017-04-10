@@ -1,12 +1,13 @@
 ---
     HeaderBar:
-        label:  PlaceHolder
+        label:  Cents Trip
 
     SiderMenu:
         menus:
             -   Travel Planning
             -   Attractions
-            -   Result
+            -   Recommendation
+            -   Summary
 
     TravelPlanning:
         Step1:

@@ -4,6 +4,7 @@ const webpackMerge = require('webpack-merge');
 const webpack = require('webpack');
 const SplitByPathPlugin = require('webpack-split-by-path');
 const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
+// const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 module.exports = function () {
     return webpackMerge.strategy({
@@ -44,6 +45,7 @@ module.exports = function () {
                 minimize: true,
                 debug: false,
             }),
+            // new BundleAnalyzerPlugin()
         ],
     });
 };

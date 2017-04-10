@@ -23,6 +23,10 @@ export default class HotelMap extends React.Component {
           scrollwheel: false
         })
         this.map = map
+        if(this.props.hotelMapInfo != null){
+            this.updateHotelMap(this.props.hotelMapInfo)
+        }
+
     }
 
     updateHotelMap({id, name, lat, lng, hawkerCenters}){
@@ -83,15 +87,16 @@ export default class HotelMap extends React.Component {
     }
 
     render(){
-        if(_.isNil(this.props.hotelMapInfo)){
-            this.clearHotelMap()
-        } else{
-            if (this.hotelID != this.props.hotelMapInfo.id){
+        if(!_.isNil(this.map)){
+            if(_.isNil(this.props.hotelMapInfo)){
                 this.clearHotelMap()
-                this.updateHotelMap(this.props.hotelMapInfo)
+            } else{
+                if (this.hotelID != this.props.hotelMapInfo.id){
+                    this.clearHotelMap()
+                    this.updateHotelMap(this.props.hotelMapInfo)
+                }
             }
         }
-
         return (
             <div>
                 <div

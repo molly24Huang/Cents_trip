@@ -11,6 +11,7 @@ import classnames from 'classnames'
 import Place from 'material-ui/svg-icons/maps/place'
 import Today from 'material-ui/svg-icons/action/today'
 import CloudDone from 'material-ui/svg-icons/file/cloud-done'
+import ContentPaste from 'material-ui/svg-icons/content/content-paste'
 import RightArrow from 'material-ui/svg-icons/navigation/chevron-right'
 import muiThemeable from 'material-ui/styles/muiThemeable'
 import { compose, withState, withHandlers, shouldUpdate, withProps } from 'recompose'
@@ -94,26 +95,25 @@ const SiderMenuHeader = ({style}) => (
     />
 )
 
-const menuAction = (currentVal, nextVal, changeMenu, pushHistory=false) => {
+const menuAction = (currentVal, nextVal, pushHistory=false) => {
     if(currentVal!=nextVal){
-        changeMenu(nextVal)
+        actions.setSiderMenuValue({
+            value: nextVal
+        })
         pushHistory && actions.pushHistory({
-            toPath: `/${nextVal}`
+            toPath: `/${nextVal=== 'recommendationResult' ? 'result' : nextVal}`
         })
     }
 }
 
 const enhance = compose(
     muiThemeable(),
-    withState('menuValue', 'setMenuValue', null),
-    withHandlers({
-        changeMenu: ({setMenuValue}) =>
-            nextValue=>setMenuValue(currentValue=>nextValue)
-    }),
     connect(state=>({
         openAttraction: state.siderMenu.openAttraction,
         openTravelPlanning: state.siderMenu.openTravelPlanning,
         openResult: state.siderMenu.openResult,
+        openSummary: state.siderMenu.openSummary,
+        menuValue: state.siderMenu.siderMenuValue,
         classfiedAttractions: state.attractions.classfiedAttractions,
         choosenAttractions: state.attractions.chosenAttractions,
         ...formSelector(state, 'startDate', 'endDate')
@@ -130,6 +130,7 @@ const enhance = compose(
                 prop.endDate !=nextProp.endDate){
             tempSelectedAttractionsIDKeeper = {}
         }
+        if(nextProp.menuValue === null) return true
         if(prop.open != nextProp.open) return true
         if(prop.menuValue !== nextProp.menuValue) {
             tempSelectedAttractionsIDKeeper = {}
@@ -141,7 +142,8 @@ const enhance = compose(
         }
         if( prop.openAttraction == nextProp.openAttraction &&
             prop.openTravelPlanning == nextProp.openTravelPlanning &&
-            prop.openResult == nextProp.openResult
+            prop.openResult == nextProp.openResult &&
+            prop.openSummary == nextProp.openSummary
         ) return false
         return true
     }),
@@ -149,10 +151,11 @@ const enhance = compose(
 
 export default enhance(({
     open, currentLocation,
-    menuValue, changeMenu,
+    menuValue,
     muiTheme, classfiedAttractions,
     openTravelPlanning,
     openAttraction,
+    openSummary,
     choosenAttractions,
     openResult, maxSelectableCount,
     ...others })=> {
@@ -190,7 +193,6 @@ export default enhance(({
                         onTouchTap={e=>
                             menuAction(currentMenuValue,
                                 'travel-planning',
-                                changeMenu,
                                 true)
                         }
                         style={
@@ -212,8 +214,7 @@ export default enhance(({
                         innerDivStyle={{fontWeight:'bold'}}
                         onNestedListToggle={e=>
                             menuAction(currentMenuValue,
-                                'attractions',
-                                changeMenu)
+                                'attractions')
                         }
                         className={
                             classnames({
@@ -247,7 +248,7 @@ export default enhance(({
                         className={classnames('sider-menu_menu', {
                             'sider-menu_disabled': !openResult,
                         })}
-                        disabled={!openResult}
+                        disabled={!openResult && !openSummary}
                         value='recommendationResult'
                         innerDivStyle={{fontWeight:'bold'}}
                         style={
@@ -256,6 +257,39 @@ export default enhance(({
                             { color: lightGreen700, background: grey200 } :
                             {}}
                         primaryText={Config.Text.SiderMenu.menus[2]}
+                        onTouchTap={e=>{
+                            menuAction(currentMenuValue,
+                                'recommendationResult',
+                                true)
+                            actions.openResultMenu()
+                        }}
+                    />
+                    <ListItem
+                        hoverColor={'rgba(118, 255, 3, 0.2)'}
+                        rightIcon={
+                            <ContentPaste
+                                color={
+                                    currentMenuValue == 'summary' ?
+                                    lightGreen700: ''
+                                }/>}
+                        className={classnames('sider-menu_menu', {
+                            'sider-menu_disabled': !openSummary,
+                        })}
+                        disabled={!openResult && !openSummary}
+                        value='summary'
+                        innerDivStyle={{fontWeight:'bold'}}
+                        style={
+                            !openSummary ? { color: grey500 } :
+                                currentMenuValue == 'summary' ?
+                            { color: lightGreen700, background: grey200 } :
+                            {}}
+                        primaryText={Config.Text.SiderMenu.menus[3]}
+                        onTouchTap={e=>{
+                            menuAction(currentMenuValue,
+                                'summary',
+                                )
+                            actions.openSummaryMenu()
+                        }}
                     />
                 </SelectableList>
             </div>

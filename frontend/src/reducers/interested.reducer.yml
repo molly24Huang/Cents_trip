@@ -1,0 +1,21 @@
+---
+    scope: interested
+
+    init:
+        interestedHotelID: null
+        interestedAttractionIDs: []
+
+    switches:
+
+        CHOOSE_INTERESTED_HOTEL:
+            !payload
+                interestedHotelID: action.hotelID
+
+        CHOOSE_INTERESTED_ATTRACTIONS:
+            !payload
+                interestedAttractionIDs: action.attractionIDs
+
+        RESET_INSTERESTED:
+            interestedHotelID: null
+            interestedAttractionIDs: []
+...

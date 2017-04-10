@@ -40,4 +40,5 @@ switches:
     SET_CHOSEN_ATTRACTION:
         !payload
             chosenAttractions: action.chosenAttractions
+
 ...

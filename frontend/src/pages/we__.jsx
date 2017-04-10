@@ -1,5 +1,3 @@
-import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
-
 export default ()=>(
     <div className='auto-outer'>
         <div className='auto-wrapper'>

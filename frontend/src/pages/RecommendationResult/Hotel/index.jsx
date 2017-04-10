@@ -17,6 +17,7 @@ import {
  import { connect } from 'react-redux'
  import ReactTooltip from 'react-tooltip'
  import HotelMap from './HotelMap'
+ import actions from 'main/actions'
 
 
 const Text = Config.Text.RecommendationResult
@@ -30,10 +31,30 @@ const headers = [
 ]
 
 const enhance = compose(
+    connect(state=>({
+        hotelFullInfo: state.attractions.hotels,
+        hawkerCentersFullInfo: state.attractions.hawkerCenters,
+        interestedHotelID: state.interested.interestedHotelID,
+    })),
+    withProps(
+        ({hotelFullInfo, hawkerCentersFullInfo, recommendedHotels}) => ({
+            hotelInfo: recommendedHotels.map(({id, hawkerCenters})=>({
+                ...hotelFullInfo[id],
+                hawkerCenters: hawkerCenters.map(id=>hawkerCentersFullInfo[id])
+            }))
+        })
+    ),
     withState('openImageView', 'setOpenImageView', false),
     withState('imageSrc', 'setImageSrc', ''),
-    withState('hotelMapInfo', 'setHotelMapInfo', null),
-    withState('selectedRow', 'setSelectedRow', null),
+    withState('hotelMapInfo', 'setHotelMapInfo', ({interestedHotelID, hotelInfo})=>{
+        if (_.isNil(interestedHotelID)) return null
+        const { id, name, lat, lng, hawkerCenters } = hotelInfo.filter(({id})=>id==interestedHotelID)[0]
+        return { id, name, lat, lng, hawkerCenters }
+    }),
+    withState('selectedRow', 'setSelectedRow', ({interestedHotelID})=>{
+        if(_.isNil(interestedHotelID)) return null
+        return interestedHotelID
+    }),
     withHandlers({
         showImageView: ({setOpenImageView, setImageSrc}) =>
             (src) => {
@@ -47,17 +68,20 @@ const enhance = compose(
             },
         chooseHotel: ({setHotelMapInfo}) =>
             ({id, lat, lng, name, hawkerCenters}) => setHotelMapInfo(pre=>{
-                return do {
                     if(_.isNil(pre) || pre.id != id){
-                        ({id, lat, lng, name, hawkerCenters})
-                    }else {
-                        null
+                        actions.chooseInterestedHotel({
+                            hotelID: id
+                        })
+                        return ({id, lat, lng, name, hawkerCenters})
                     }
-                }
+                    actions.chooseInterestedHotel({
+                        hotelID: null
+                    })
+                    return null
             }),
         selectRow: ({setSelectedRow}) =>
             (rowID) => setSelectedRow(preID=>{
-                return do {
+                const newID = do {
                     if(_.isNil(preID)){
                         rowID
                     }else if(preID==rowID){
@@ -66,20 +90,11 @@ const enhance = compose(
                         rowID
                     }
                 }
+
+                return newID
             })
     }),
-    connect(state=>({
-        hotelFullInfo: state.attractions.hotels,
-        hawkerCentersFullInfo: state.attractions.hawkerCenters,
-    })),
-    withProps(
-        ({hotelFullInfo, hawkerCentersFullInfo, recommendedHotels}) => ({
-            hotelInfo: recommendedHotels.map(({id, hawkerCenters})=>({
-                ...hotelFullInfo[id],
-                hawkerCenters: hawkerCenters.map(id=>hawkerCentersFullInfo[id])
-            }))
-        })
-    )
+
 )
 
 export default enhance(({

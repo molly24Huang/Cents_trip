@@ -102,22 +102,6 @@ export default enhance(({
                                     floatingLabelText={
                                         Text.TravelPlanning.Step1.budgetHint}
                                 />
-                                {/* <Field
-                                    component={SelectField}
-                                    name='peopleNum'
-                                    floatingLabelText={
-                                        Text.TravelPlanning.Step1.peopleNumHint}>
-                                    <MenuItem
-                                        value={1}
-                                        primaryText={
-                                            Text.TravelPlanning.Step1.peopleNum1
-                                        }/>
-                                    <MenuItem
-                                        value={2}
-                                        primaryText={
-                                            Text.TravelPlanning.Step1.peopleNum2
-                                        }/>
-                                </Field> */}
                                 <NextStepButton
                                     onTouchTap={ e=> nextStep()}
                                     label = 'Next'

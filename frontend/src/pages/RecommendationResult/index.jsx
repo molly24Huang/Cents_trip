@@ -1,30 +1,38 @@
 import { Tabs, Tab } from 'material-ui'
 import { compose, lifecycle, withState, withHandlers } from 'recompose'
-import { ModalManager } from 'react-dynamic-modal'
 import _ from 'lodash'
 import { connect } from 'react-redux'
-import SummaryModal from 'components/SummaryModal'
-import { Menu, MainButton, ChildButton } from 'components/mfb'
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 import Hotel from './Hotel'
 import Attractions from './Attractions'
+import Summary from 'pages/Summary'
 import actions from 'main/actions'
+
+const dummy = {"attractions": {"chosen": [{"id": 24, "hawkerCenters": [20]}, {"id": 13, "hawkerCenters": [85, 83, 124]}], "rec": [{"id": 1, "hawkerCenters": [109, 27, 107]}, {"id": 35, "hawkerCenters": [108, 114, 196]}, {"id": 37, "hawkerCenters": [108, 196, 114]}, {"id": 38, "hawkerCenters": [196, 114, 108]}, {"id": 103, "hawkerCenters": [109, 27, 107]}, {"id": 40, "hawkerCenters": [109, 154, 27]}, {"id": 9, "hawkerCenters": [125, 25, 222]}, {"id": 6, "hawkerCenters": [203, 5, 18]}, {"id": 43, "hawkerCenters": [228, 108, 154]}]}, "hotels": [{"id": 7959059, "hawkerCenters": [20, 7, 118]}, {"id": 17247062, "hawkerCenters": [20, 7]}, {"id": 16680449, "hawkerCenters": [71, 69, 170]}, {"id": 5493930, "hawkerCenters": [199, 140, 204]}, {"id": 5494971, "hawkerCenters": [199, 140, 204]}]}
 
 const enhance = compose(
     connect(state=>({
-        recommendationResult: state.recommendation.result
+        recommendationResult: state.recommendation.result,
+        recAttractionIDs: state.interested.interestedAttractionIDs,
+        openSummary: state.siderMenu.openSummary,
     })),
 
-    withState('extraAttractions', 'setExtraAttractions', []),
+    withState('extraAttractions', 'setExtraAttractions',(
+        {recAttractionIDs})=> recAttractionIDs),
     withHandlers({
         chooseExtraAttraction: ({setExtraAttractions})=>
             attractionID => setExtraAttractions(pre=>{
-                return do {
+                const attrIDs = do {
                     if(pre.includes(attractionID)){
                         _.without(pre, attractionID)
                     }else{
                         _.union(pre, [attractionID])
                     }
                 }
+                actions.chooseInterestedAttractions({
+                    attractionIDs: attrIDs
+                })
+                return attrIDs
             })
         }
     ),
@@ -41,15 +49,16 @@ const enhance = compose(
 
 export default enhance(
     ({
-        chooseExtraAttraction, extraAttractions,
+        chooseExtraAttraction, extraAttractions,openSummary,
         recommendationResult: {
-                hotels, attractions
+                hotels, attractions,
+                // hotels=dummy.hotels, attractions=dummy.attractions
             }={}
     })=> {
+
         if(_.isNil(hotels) || _.isNil(attractions)){
             return null
         }
-
         return (
         <div className='result-wrapper'>
             <Tabs>
@@ -64,28 +73,14 @@ export default enhance(
                     />
                 </Tab>
             </Tabs>
-            <div onClick={e=>{e.stopPropagation()}}>
-                <Menu effect='slidein-spring' position='br' method='hover'>
-                    <MainButton
-                        iconResting="ion-plus-round"
-                        iconActive="ion-close-round"
-                        label='More Actions'
-                        onClick={e=>{
-                            e.preventDefault()
-                            e.stopPropagation()
-                        }}
-                        />
-                    <ChildButton
-                        icon="ion-happy"
-                        label="Summary"
-                        onClick={()=>{
-                            ModalManager.open(
-                                <SummaryModal/>
-                            )
-                        }}
-                     />
-            </Menu>
-            </div>
+
+            <ReactCSSTransitionGroup
+                transitionName='summary'
+                transitionEnterTimeout={2000}
+                transitionLeaveTimeout={1000}
+                >
+                { openSummary ? <Summary/> : null }
+            </ReactCSSTransitionGroup>
         </div>
     )}
 )

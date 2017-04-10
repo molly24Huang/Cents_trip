@@ -75,7 +75,7 @@ export default enhance(({
                     changeCenter={changeCenter}
                     chooseExtraAttraction={chooseExtraAttraction}
                     extraAttractions={extraAttractions}
-                    gridItems={displayAttractions.filter(x=>!_.isNil(x.id)).map(
+                    gridItems={displayAttractions.map(
                         ({id, hawkerCenters}, idx)=>({
                             img: attractionImages[id],
                             title: attractionFullInfo[id].NAME,
@@ -89,12 +89,12 @@ export default enhance(({
         </Slider>
     }
         <AttractionMap
-        center={center}
-        recommendations={rec}
-        attractionFullInfo={attractionFullInfo}
-        userChosenExtraAttractions={extraAttractions}
-        chooseExtraAttraction={chooseExtraAttraction}
-        hawkerCenterFullInfo={hawkerCenterFullInfo}
+            center={center}
+            recommendations={rec.filter(x=>!_.isNil(x.id))}
+            attractionFullInfo={attractionFullInfo}
+            userChosenExtraAttractions={extraAttractions}
+            chooseExtraAttraction={chooseExtraAttraction}
+            hawkerCenterFullInfo={hawkerCenterFullInfo}
         />
         </div>
     ))

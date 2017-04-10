@@ -5,28 +5,50 @@
         openAttraction: false
         openTravelPlanning: true
         openResult: false
+        openSummary: false
+
+        siderMenuValue: null
 
     switches:
+
+        RESET_TO_WELCOME:
+            openAttraction: false
+            openTravelPlanning: true
+            openResult: false
+            openSummary: false
+            siderMenuValue: null
+
+        SET_SIDER_MENU_VALUE:
+            !payload
+                siderMenuValue: action.value
 
         OPEN_ATTRACTION_MENU:
             openAttraction: true
             openTravelPlanning: false
             openResult: false
+            openSummary: false
 
         CLOSE_ATTRACTION_MENU:
             openAttraction: false
             openTravelPlanning: true
+            openSummary: false
 
         OPEN_RESULT_MENU:
             openResult: true
             openTravelPlanning: false
             openAttraction: false
+            openSummary: false
 
         CLOSE_RESULT_MENU:
             openResult: false
             openTravelPlanning: true
+            openAttraction: false
+            openSummary: false
 
-
-
+        OPEN_SUMMARY_MENU:
+            openResult: false
+            openTravelPlanning: false
+            openAttraction: false
+            openSummary: true
 
 ...

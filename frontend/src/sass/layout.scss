@@ -22,6 +22,24 @@ html {
     background-color: $gray-lighter;
 }
 
+.we-image-wrapper {
+    display: inline-block;
+    width: 33.3%;
+
+    img {
+        width: 100%;
+        transform: rotateY(0deg);
+        transition: transform 0.5s ease-in-out;
+    }
+
+    &:hover {
+        img {
+            opacity: 0.3;
+            transform: rotateY(180deg);
+        }
+    }
+}
+
 .loading-wrapper {
     width: 100%;
     height: 100%;
@@ -239,6 +257,94 @@ html {
     transform: rotate(180deg);
 }
 
+.summary-enter {
+    opacity: 0;
+
+    &.summary-enter-active {
+        opacity: 1;
+        transition: opacity 2s ease;
+    }
+}
+
+.summary-leave {
+    opacity: 1;
+
+    &.summary-leave-active {
+        opacity: 0;
+        transition: opacity 1s ease;
+    }
+}
+
+
+.chosen-attr {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: 10px;
+    border-radius: 20px !important;
+    padding: 5px;
+    background-color: rgba(94, 156, 74, 0.19) !important;
+
+    .preview-image{
+        width: 250px;
+        height: 250px;
+        position: relative;
+        &:hover {
+            .fg {
+                transform: rotateY(180deg)
+            },
+            .bg {
+                transform: rotateY(0deg)
+            }
+        }
+
+        .bg,.fg {
+            backface-visibility: hidden;
+            border-radius: 50%;
+            width: 100%;
+            height: 100%;
+            background-size: 100% 100% !important;
+            transition: transform 0.5s ease-in-out;
+            position: absolute;
+        }
+
+        .bg {
+            transform: rotateY(180deg);
+        }
+    }
+}
+
+.summary-animation-enter {
+
+    &.hotel {
+        transform: translate(-500px);
+    }
+
+
+    &.summary-animation-enter-active {
+
+        &.hotel {
+            transform: translate(0);
+            transition: transform 1s ease;
+        }
+
+    }
+}
+
+.summary-animation-leave {
+
+    &.hotel {
+        transform: translate(0);
+    }
+
+    &.summary-animation-leave-active {
+
+        &.hotel {
+            transform: translate(500px);
+            transition: transform 0.5s ease;
+        }
+    }
+}
 
 
 div:focus {
@@ -265,4 +371,71 @@ a {
 [dir='rtl'] .slick-prev:before
 {
     content: '' !important;
+}
+@keyframes zoomIn {
+   from {
+   opacity: 0;
+   transform: scale3d(.3, .3, .3);
+   }
+
+   50% {
+   opacity: 1;
+   }
+
+   100%{
+      transform: scale3d(1,1,1);
+   }
+}
+@keyframes zoomInUp {
+  from {
+    opacity: 0;
+    transform: scale3d(.1, .1, .1) translate3d(0, 1000px, 0);
+    animation-timing-function: cubic-bezier(0.550, 0.055, 0.675, 0.190);
+  }
+
+  60% {
+    opacity: 1;
+    -webkit-transform: scale3d(.475, .475, .475) translate3d(0, -60px, 0);
+    transform: scale3d(.475, .475, .475) translate3d(0, -60px, 0);
+    -webkit-animation-timing-function: cubic-bezier(0.175, 0.885, 0.320, 1);
+    animation-timing-function: cubic-bezier(0.175, 0.885, 0.320, 1);
+  }
+}
+@keyframes rotateIn {
+  from {
+    transform-origin: center;
+    transform: rotate3d(0, 0, 1, -200deg);
+    opacity: 0;
+  }
+
+  to {
+    transform-origin: center;
+    transform: none;
+    opacity: 1;
+  }
+}
+@keyframes flipInX {
+  from {
+    transform: perspective(400px) rotate3d(1, 0, 0, 90deg);
+    animation-timing-function: ease-in;
+    opacity: 0;
+  }
+
+  40% {
+    transform: perspective(400px) rotate3d(1, 0, 0, -20deg);
+    animation-timing-function: ease-in;
+  }
+
+  60% {
+    transform: perspective(400px) rotate3d(1, 0, 0, 10deg);
+    opacity: 1;
+  }
+
+  80% {
+    transform: perspective(400px) rotate3d(1, 0, 0, -5deg);
+  }
+
+  to {
+    transform: perspective(400px);
+  }
 }
