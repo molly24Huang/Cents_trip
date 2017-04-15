@@ -61,7 +61,7 @@ class InfoHandler(RequestHandler):
                 'roomURL': dict_airbnb['ROOMURL'],
                 }
 
-        sql_attr = "SELECT ATTRACTIONID,NAME,LATITUDE,LONGITUDE,CATEGORY,TICKET_PRICE FROM TOURISM_ATTRACTIONS"
+        sql_attr = "SELECT ATTRACTIONID,NAME,LATITUDE,LONGITUDE,POPULARITY, RATING, CATEGORY,TICKET_PRICE FROM TOURISM_ATTRACTIONS"
         stmt = ibm_db.exec_immediate(conn, sql_attr)
         while True:
             dict_attr = ibm_db.fetch_assoc(stmt)
@@ -74,6 +74,8 @@ class InfoHandler(RequestHandler):
                     'LATITUDE':  float( dict_attr['LATITUDE'].strip() ),
                     'LONGITUDE': float( dict_attr['LONGITUDE'].strip() ),
                     'CATEGORY': dict_attr['CATEGORY'],
+                    'POPULARITY': dict_attr['POPULARITY'],
+                    'RATING': dict_attr['RATING'],
                     }
 
 
@@ -130,6 +132,8 @@ def make_app(autoreload):
         (r"/recommend", RecommendationHandler),
         (r"/travel-planning", IndexHandler),
         (r"/result", IndexHandler),
+        (r"/auto", IndexHandler),
+        (r"/manual", IndexHandler),
         #(r'/assets/css', StaticFileHandler, {'path': os.path.join(os.path.dirname(__file__), 'static/assets/css')}),
         (r'/(.*)', StaticFileHandler, {'path': os.path.join(os.path.dirname(__file__), 'static')})
     ], autoreload=autoreload, static_path=os.path.join(os.path.dirname(__file__), 'static'))
