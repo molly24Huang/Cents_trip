@@ -19,7 +19,7 @@ Tourist Attractions: https://data.gov.sg/dataset/tourist-attractions
 MRT https://data.gov.sg/dataset/train-station-chinese-names
 
 front-end:
-React library
+React JavaScript library
 
 back-end:
 Python 3.5.2
